@@ -1,0 +1,129 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Cart Page";
+    var listProduct = ViewBag.listProduct;
+    var listCategory = ViewBag.listCategory;
+    Layout = "~/Views/Shared/UCartLayout.cshtml";
+}
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session.GetString("customer");
+    var customer = new UserVm();
+    if (session != null)
+    {
+        customer = JsonConvert.DeserializeObject<UserVm>(session);
+    }
+}
+
+@model UCartVm;
+
+<!-- cart-area-start -->
+<section class="cart-area pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="#">
+                    <div class="table-content table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Images</th>
+                                    <th class="cart-product-name">Product</th>
+                                    <th class="product-price">Unit Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <th class="product-subtotal">Total</th>
+                                    <th class="product-remove">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model.Cart)
+                                {
+                                    if (c.UserID == customer.UserID)
+                                    {
+                                        foreach (var p in Model.Products)
+                                        {
+                                            if (p.ProductID == c.ProductID)
+                                            {
+                                                <tr>
+                                                    <!-- Hình Ảnh Sản phẩm -->
+                                                    <td class="product-thumbnail">
+                                                        <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@p.ProductID">
+                                                            <img src="~/Image/home/products/@p.Picture" alt="">
+                                                        </a>
+                                                    </td>
+                                                    <!-- Tên Sản phẩm -->
+                                                    <td class="product-name">
+                                                        <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@p.ProductID">
+                                                            @p.ProductName
+                                                        </a>
+                                                    </td>
+                                                    <!-- Số lượng sản phẩm -->
+                                                    <td class="product-price">
+                                                        <span class="amount">
+                                                            @p.Price
+                                                        </span>
+                                                    </td>
+                                                    <td class="product-quantity">
+                                                        <div class="cart-plus-minus"><input type="text" value="@c.Quantity"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                                                    </td>
+                                                    <!-- Giá sản phẩm -->
+                                                    @{
+                                                        float total = @p.Price * @c.Quantity;
+                                                    }
+                                                    <td class="product-subtotal"><span class="amount">@total</span></td>
+                                                    <!-- Xóa sản phẩm khỏi giỏ hàng -->
+                                                    <td class="product-remove"><a href="@Url.Action("Delete", "UHome", new { cartId = @c.CartID })"><i class="fa fa-times"></i></a></td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Mã khuyến mãi Start -->
+                            <div class="coupon-all">
+                                <div class="coupon">
+                                    <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
+                                    <button class="tp-btn-h1" name="apply_coupon" type="submit">
+                                        Apply
+                                        coupon
+                                    </button>
+                                </div>
+                                <!-- Mã khuyến mãi End -->
+                                <!-- Sửa giỏ hàng Start -->
+                                <div class="coupon2">
+                                    <button class="tp-btn-h1" name="update_cart" type="submit">Update cart</button>
+                                </div>
+                                <!-- Sửa giỏ hàng End -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Thanh toán -->
+                    <div class="row justify-content-end">
+                        <div class="col-md-5">
+                            <div class="cart-page-total">
+                                <h2>Cart totals</h2>
+                                <ul class="mb-20">
+                                    <!-- Tổng giá hàng -->
+                                    <li>Subtotal <span>$25</span></li>
+                                    <!-- Mã giảm giá -->
+                                    <li>Coupon <span>$00</span></li>
+                                    <!-- Tổng thanh toán -->
+                                    <li>Total <span>$25</span></li>
+                                </ul>
+                                <a class="tp-btn-h1" asp-controller="UPayment" asp-action="Index">Proceed to checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- cart-area-end -->

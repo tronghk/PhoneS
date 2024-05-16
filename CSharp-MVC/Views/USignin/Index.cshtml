@@ -1,0 +1,44 @@
+﻿@model CSharp_MVC.Models.Signin
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+</head>
+<div class="banner-login">
+    <div class="container-login">
+        <!-- Login panel -->
+        <div class="panel login-panel">
+            <h2>Login</h2>
+            <div class="login-notify">Login to NienHoep to continue</div>
+
+            <form class="form-control" asp-controller="USignin" asp-action="Index" method="post">
+                <!-- Tài khoản -->  
+                <input type="text" placeholder="Enter Username" asp-for="Account" required>
+                <span asp-validation-for="Account" class="text-danger"></span>
+                <!-- Mật khẩu-->
+                <input type="password" placeholder="Enter Password" asp-for="Password" required>
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <!-- Quên mật khẩu-->
+                <div class="forgetpw-notify">Forget your password? <a href="">Click here!</a></div>
+                <!-- Button đăng nhập-->
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- Welcome + signup panel -->
+        <div class="panel signup-panel">
+            <h2>Welcome to NienHoep!</h2>
+            <div class="signup-notify">First time here? Signup for a brand new account right now!</div>
+            <!-- Button đăng kí -->
+            <button asp-action="Index" asp-controller="USignup"><a class="button" asp-action="Index" asp-controller="USignup" style="color:white">Sign up</a></button>
+            <div class="info"><a href="">Privacy Policy</a><a href="">Terms & Conditions</a></div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/login.js" asp-append-version="true"></script>
+}

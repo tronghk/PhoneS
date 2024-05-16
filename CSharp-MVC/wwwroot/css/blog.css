@@ -1,0 +1,10 @@
+.blog-picture {
+  display: flex !important;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 405px;
+}
+.blog-description {
+  text-align: center;
+}

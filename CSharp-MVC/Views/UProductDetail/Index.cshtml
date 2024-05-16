@@ -1,0 +1,212 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "ProductDetail Page";
+    var listProduct = ViewBag.listProduct;
+    var listCategory = ViewBag.listCategory;
+    Layout = "~/Views/Shared/UProductDetailLayout.cshtml";
+}
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session.GetString("customer");
+    var customer = new UserVm();
+    if (session != null)
+    {
+        customer = JsonConvert.DeserializeObject<UserVm>(session);
+    }
+}
+
+@model ProductDetailVm
+
+<section class="breadcrumb__area box-plr-75">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="breadcrumb__wrapper">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="UHome" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb__area-end -->
+<!-- product-details-start -->
+<div class="product-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="product__details-nav d-sm-flex align-items-start">
+                    <!-- Link hình ảnh sản phẩm Start -->
+                    <ul class="nav nav-tabs flex-sm-column justify-content-between" id="productThumbTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            @{
+                                String[] splitPicture = @Model.Picture.Split('.');
+                            }
+                            <button class="nav-link active" id="@splitPicture[0]-tab" data-bs-toggle="tab" data-bs-target="#@splitPicture[0]" type="button" role="tab" aria-controls="@splitPicture[0]" aria-selected="true">
+                                <img src="~/Image/home/products/@Model.Picture" alt="">
+                            </button>
+                        </li>
+
+                        @foreach(var obj in Model.Imgs)
+                        {
+                            <li class="nav-item" role="presentation">
+                                @{
+                                    splitPicture = obj.ImageLink.Split('.');
+                                }
+                                <button class="nav-link" id="@splitPicture[0]-tab" data-bs-toggle="tab" data-bs-target="#@splitPicture[0]" type="button" role="tab" aria-controls="@splitPicture[0]" aria-selected="false">
+                                    <img src="~/Image/@Model.ProductID/@obj.ImageLink" alt="">
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    <!-- Link hình ảnh sản phẩm End -->
+                    <div class="product__details-thumb">
+                        <!-- Hình ảnh sản phẩm chính(Ảnh lớn) Start -->
+                        <div class="tab-content" id="productThumbContent">
+                            @{
+                                splitPicture = @Model.Picture.Split('.');
+                            }
+                            <div class="tab-pane fade show active" id="@splitPicture[0]" role="tabpanel" aria-labelledby="@splitPicture[0]-tab">
+                                <div class="product__details-nav-thumb w-img">
+                                    <img src="~/Image/home/products/@Model.Picture" alt="">
+                                </div>
+                            </div>
+                            @foreach(var obj in Model.Imgs)
+                            {
+                                splitPicture = obj.ImageLink.Split('.');
+                                <div class="tab-pane fade" id="@splitPicture[0]" role="tabpanel" aria-labelledby="@splitPicture[0]-tab">
+                                    <div class="product__details-nav-thumb w-img">
+                                        <img src="~/Image/@Model.ProductID/@obj.ImageLink" alt="">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <!-- Hình ảnh sản phẩm chính(Ảnh lớn) End -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <!-- Tên sản phẩm -->
+                <div class="product__details-content">
+                    <h6>@Model.ProductName</h6>
+                    <!-- Giá sản phẩm -->
+                    <div class="price mb-10">
+                        <span>@Model.Price VND</span>
+                    </div>
+                    <!-- Thông số sản phẩm -->
+                    <div class="features-des mb-20 mt-10">
+                        <ul>
+                            <li>Screen: @Model.Screen</li>
+                            <li>OS: @Model.OS</li>
+                            <li>FrontCam: @Model.FrontCam</li>
+                            <li>BackCam: @Model.BackCam</li>
+                            <li>Chip: @Model.Chip</li>
+                            <li>Ram: @Model.Ram</li>
+                            <li>Storage: @Model.Storage</li>
+                            <li>Sim: @Model.SIM</li>
+                            <li>Battery: @Model.Battery</li>
+                            <li>Description: @Model.Description</li>
+                        </ul>
+                    </div>
+                    <!-- Tồn kho -->
+                    <div class="product-stock mb-20">
+                        <h5>Availability: <span> @Model.Quantity in stock</span></h5>
+                    </div>
+                    <!-- Thêm bớt sản phẩm trong giỏ hàng -->
+                    <div class="cart-option mb-15">
+                        <div class="product-quantity mr-20">
+                            <div class="cart-plus-minus p-relative"><input type="text" value="1"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                        </div>
+                        @if(session != null)
+                        {
+                            <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid = @Model.ProductID})" class="cart-btn">Add to Cart</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="USignin" asp-action="Index" class="cart-btn">Add to Cart</a>
+                        }
+                    </div>
+                    <!-- Mã hiệu sản phẩm -->
+                    <div class="product-tag-area mt-15">
+                        <div class="product_info">
+                            <span class="posted_in">
+                                <span class="title">Categories:</span>
+                                <a href="@Url.Action("Index", "UProducts", new { categoryId = Model.ProdCateID })">@Model.ProdCateName</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- product-details-end -->
+<!-- product-infomation-start -->
+<div class="product-details-des mt-40 mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="product__details-des-tab">
+                    <ul class="nav nav-tabs" id="productDesTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="aditional-tab" data-bs-toggle="tab" data-bs-target="#aditional" type="button" role="tab" aria-controls="aditional" aria-selected="false">Additional information</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="prodductDesTaContent">
+            <div class="tab-pane fade" id="aditional" role="tabpanel" aria-labelledby="aditional-tab">
+                <div class="product__desc-info">
+                    <ul>
+                        <li>
+                            <h6>Weight</h6>
+                            <span>2 lbs</span>
+                        </li>
+                        <li>
+                            <h6>Dimensions</h6>
+                            <span>12 × 16 × 19 in</span>
+                        </li>
+                        <li>
+                            <h6>Product</h6>
+                            <span>Purchase this product on rag-bone.com</span>
+                        </li>
+                        <li>
+                            <h6>Color</h6>
+                            <span>Gray, Black</span>
+                        </li>
+                        <li>
+                            <h6>Size</h6>
+                            <span>S, M, L, XL</span>
+                        </li>
+                        <li>
+                            <h6>Model</h6>
+                            <span>Model	</span>
+                        </li>
+                        <li>
+                            <h6>Shipping</h6>
+                            <span>Standard shipping: $5,95</span>
+                        </li>
+                        <li>
+                            <h6>Care Info</h6>
+                            <span>Machine Wash up to 40ºC/86ºF Gentle Cycle</span>
+                        </li>
+                        <li>
+                            <h6>Brand</h6>
+                            <span>Kazen</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- product-infomation-end -->

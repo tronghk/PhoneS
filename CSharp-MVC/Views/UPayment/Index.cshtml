@@ -1,0 +1,316 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Payment Page";
+    var listProduct = ViewBag.listProduct;
+    var listCategory = ViewBag.listCategory;
+    Layout = "~/Views/Shared/UPaymentLayout.cshtml";
+}
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session.GetString("customer");
+    var customer = new UserVm();
+    if (session != null)
+    {
+        customer = JsonConvert.DeserializeObject<UserVm>(session);
+    }
+}
+
+@model UPaymentVm;
+
+@{
+    int cusid = 0;
+    foreach (var u in Model.User)
+    {
+        if (u.Account == customer.UserID)
+        {
+            cusid = u.CustomerID;
+        }
+    }
+}
+
+<link href="~/css/payment.css" rel="stylesheet" />
+<div class="page-wrapper container">
+    <div class="payment-wrapper container row gx-2 justify-content-between d-md-flex">
+        <div class="first-content col-md-12 col-lg-6 pt-3">
+            <!--Payment Infomation Wrapper-->
+            <div class="payment-info">
+                <!-- Contact Infomation -->
+                <div class="contact-info pt-5">
+                    <div class="contact-title">
+                        <h3>Contact Information</h3>
+                    </div>
+                    <div class="contact-mail container">
+                        <div class="email row gx-4">
+                            <p id="full-name-display" class="full-name col-lg-9">
+                                Phan Thái Hòa
+                                <a id="email-display" class="email">(thaihoaphan123@gmail.com)</a>
+                            </p>
+                        </div>
+                        <div class="log-out">
+                            <a>Log out</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shipping Infomation -->
+                <div class="shipping-info container row g-3 pt-4">
+                    <div class="shipping-title">
+                        <h3>Shipping Address</h3>
+                    </div>
+                    <!-- Shipping Infomations Wrapper-->
+                    <div class="shipping-holder">
+                        <!-- Saved Shipping Address -->
+                        <div class="saved-address">
+                            <div class="dropdown">
+                                <button id="saved-addresses"
+                                        class="btn btn-outline-secondary dropdown-toggle w-100"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    Saved Addresses
+                                </button>
+                                <ul id="addresses-list" class="dropdown-menu w-100">
+                                    <li>
+                                        <a id="address1" class="dropdown-item" href="#">Address 1</a>
+                                    </li>
+                                    <li>
+                                        <a id="address1" class="dropdown-item" href="#">Address 2</a>
+                                    </li>
+                                    <li>
+                                        <a id="address1" class="dropdown-item" href="#">Address 3</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Country Shipping Infomation-->
+                        <div class="shipping-country pt-2">
+                            <div class="dropdown">
+                                <button id="saved-countries"
+                                        class="btn btn-outline-secondary dropdown-toggle w-100"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    Country/Region
+                                </button>
+                                <ul id="countries-list" class="dropdown-menu w-100">
+                                    <li>
+                                        <a id="country" class="dropdown-item" href="#">Viet Nam</a>
+                                    </li>
+                                    <li>
+                                        <a id="country" class="dropdown-item" href="#">United States</a>
+                                    </li>
+                                    <li>
+                                        <a id="country" class="dropdown-item" href="#">Japan</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Receiver's Name -->
+                        <div class="shipping-name row g-1 pt-2">
+                            <div class="first-name form-floating col-md-6">
+                                <!-- Input customer's first name -->
+                                <input type="name"
+                                       class="form-control"
+                                       id="first-name"
+                                       placeholder="First Name" />
+                                <label for="first-name">First Name</label>
+                            </div>
+                            <div class="last-name form-floating col-md-6">
+                                <!-- Input customer's last name -->
+                                <input type="name"
+                                       class="form-control"
+                                       id="last-name"
+                                       placeholder="Last Name" />
+                                <label for="last-name">Last Name</label>
+                            </div>
+                        </div>
+                        <!-- Apartment, Block Infomation-->
+                        <div class="shipping-address-number pt-2">
+                            <!-- Input customer's address -->
+                            <input type="text"
+                                   class="form-control"
+                                   id="address-number"
+                                   placeholder="Address" />
+                        </div>
+                        <div class="shipping-apartment pt-2">
+                            <!-- Input customer's apartment (optional) -->
+                            <input type="text"
+                                   class="form-control"
+                                   id="apartment"
+                                   placeholder="Apartment, suite, etc (optional)" />
+                        </div>
+                        <!-- City, Ward, District Shipping Infomation-->
+                        <div class="shipping-place pt-2">
+                            <div class="city">
+                                <!-- Input customer's city -->
+                                <input type="text"
+                                       class="form-control"
+                                       id="city"
+                                       placeholder="City" />
+                            </div>
+                            <div class="ward pt-2">
+                                <!-- Input customer's ward -->
+                                <input type="text"
+                                       class="form-control"
+                                       id="ward"
+                                       placeholder="Ward" />
+                            </div>
+                            <div class="district pt-2">
+                                <!-- Input customer's district -->
+                                <input type="text"
+                                       class="form-control"
+                                       id="district"
+                                       placeholder="District" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shipping Method-->
+                <div class="shipping-method container pt-4">
+                    <!-- In this View, always +5$ to the bill -->
+                    <div class="title">
+                        <h3>Shipping Method</h3>
+                    </div>
+                    <div class="shipping-option">
+                        <div class="option-1 container row-lg-6 border rounded d-flex justify-content-lg-end">
+                            <div class="option-name col-lg-6 p-2">
+                                <p>Standard</p>
+                            </div>
+                            <div class="option-price col-lg-6 p-2 d-flex justify-content-lg-end">
+                                <p>$5.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Confirm, Back Button -->
+                <div class="payment-button-wrapper container p-5 row g-1">
+                    <div class="payment-button d-flex justify-content-between align-content-center col-lg-12 col-md-12 col-sm-6">
+                        <div class="home-button d-flex align-content-center pt-3">
+                            <box-icon name="chevron-left" class="pt-2"></box-icon>
+                            <!-- Back to Home page -->
+                            <a href=""
+                               class="link-secondary link-offset-2 link-unde rline-opacity-25 link-underl ine-opacity-100-hover pt-2">Need more ? Return to store</a>
+                        </div>
+                        <div class="confirm-holder pb-3 col-md-6 d-flex justify-content-end col-sm-6">
+                            <!-- Create Order Button -->
+                            @{
+                                float subtotal = 0;
+                                int[] proids = new int[255];
+                                int count = 0;
+                            }
+                            @foreach (var c in Model.Cart)
+                            {
+                                if (c.UserID == customer.UserID)
+                                {
+                                    foreach (var p in Model.Products)
+                                    {
+                                        if (c.ProductID == p.ProductID)
+                                        {
+                                            float total = p.Price * c.Quantity;
+                                            subtotal += @total;
+                                            proids[count] = c.ProductID;
+                                            count += 1;
+                                        }
+                                    }
+                                }
+                            }
+                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID, proid = @proids})">
+                                <button class="confirm-btn btn btn-outline-danger p-lg-3 p-sm-2 w-sm-100">
+                                    Create Order
+                                </button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="second-content col-md-12 col-lg-6 pt-3 ps-lg-5">
+            <div class="product-payment pt-lg-5 pt-md-3">
+                <!-- Product's holder, this is where a product in cart will be rendered to-->
+                <div class="product-list pb-lg-4 pb-md-3">
+                    <h3 class="pb-5">Order Summary</h3>
+                    @foreach (var c in Model.Cart)
+                    {
+                        if (c.UserID == customer.UserID)
+                        {
+                            foreach (var p in Model.Products)
+                            {
+                                if (c.ProductID == p.ProductID)
+                                {
+                                    <div class="product-container position-relative d-flex pb-4">
+                                        <div class="pr-view d-flex pe-4">
+                                            <!-- Product's image -->
+                                            <div class="image-container border rounded-4">
+                                                <img src="~/Image/home/products/@p.Picture" alt="" />
+                                            </div>
+                                            <!-- Product's quantity -->
+                                            <div class="pr-quantity position-absolute z-1 rounded-circle">
+                                                <span id="pro-quatity" class="quantity-number p-1 text-white">@c.Quantity</span>
+                                            </div>
+                                        </div>
+                                        <div class="pr-infomation pe-3">
+                                            <!-- Product's description -->
+                                            <div class="pro-description">
+                                                @p.Description
+                                            </div>
+                                            <!-- Product's color -->
+                                            <div class="pro-color">Bạc</div>
+                                        </div>
+                                        <!-- Product's price -->
+                                        <div class="pr-totalprice">
+                                            @{
+                                                float total = p.Price * c.Quantity;
+                                            }
+                                            <p>@total$</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <div class="product-border border-bottom"></div>
+                <!-- Input customer's city -->
+                <div class="product-summary">
+                    <div class="sub-total d-flex justify-content-between pb-2 pt-3">
+                        <div class="sub-text">
+                            <p>Sub Total</p>
+                        </div>
+                        <div class="sub-money">
+                            <p>@subtotal$</p>
+                        </div>
+                    </div>
+                    <div class="shipping d-flex justify-content-between pb-3">
+                        <div class="shipping-method">
+                            <p>Shipping</p>
+                        </div>
+                        <div class="method-price">
+                            <p>5.00$</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Input customer's city -->
+                <div class="product-border border-bottom"></div>
+                <!-- Input customer's city -->
+                <div class="product-total container pt-4">
+                    <div class="total-sum d-flex justify-content-between">
+                        <div class="total">
+                            <p>Total</p>
+                        </div>
+                        <div class="total-price d-flex justify-content-between">
+                            <div class="currency pe-3 d-flex"><p>NHD</p></div>
+                            @{
+                                subtotal += 5.0f;
+                            }
+                            <div class="sum d-flex"><p>@subtotal$</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/payment.js"></script>

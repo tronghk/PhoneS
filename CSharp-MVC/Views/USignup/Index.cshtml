@@ -1,0 +1,63 @@
+﻿@model CSharp_MVC.Models.Signup
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+</head>
+@if (ViewBag.SuccessMsg != null)
+{
+    <div id="msgAlert" class="alert alert-success" role="alert">
+        @ViewBag.SuccessMsg
+    </div>
+}
+<body>
+    <div class="sign-up-background pt-4 pb-4">
+        <div class="sign-up-wrapper">
+            <div class="sign-up-info mx-auto col-10 col-md-8 col-lg-6">
+                <form asp-action="Index" asp-controller="USignup">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="justify-content-end">
+
+                        <label asp-for="Account" class="form-label">Email</label>
+                        <input asp-for="Account" type="email" class="form-control"></input>
+                        <span asp-validation-for="Account" class="text-danger"></span>
+
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control"></input>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                        <label asp-for="FullName" class="form-label">Full Name</label>
+                        <input asp-for="FullName" class="form-control"></input>
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+
+                        <label asp-for="Nationality" class="form-label">Nationality</label>
+                        <input asp-for="Nationality" class="form-control"></input>
+                        <span asp-validation-for="Nationality" class="text-danger"></span>
+
+                        <label asp-for="Phone" class="form-label">Phone</label>
+                        <input asp-for="Phone" class="form-control"></input>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+
+                        <label asp-for="Address" class="form-label">Address</label>
+                        <input asp-for="Address" class="form-control"></input>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+
+                    </div>
+                    <div class="sign-up-btn d-flex mx-auto col-10 col-md-8 col-lg-6 pt-lg-4 mt-2 me-0 justify-content-end">
+                        <button asp-controller="UHome" asp-action="Index" class="btn btn-outline-danger me-2">Cancel</button>
+                        <button type="submit" class="btn btn-outline-primary">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000)
+    </script>
+}

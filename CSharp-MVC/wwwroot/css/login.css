@@ -1,0 +1,133 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'arial', arial, monospace;
+    align-items: center;
+}
+body {
+    background-color: #232f3e;
+}
+.banner-login{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    align-content: center;
+    justify-content:center;
+}
+
+/* Styles for container */
+.container-login {
+    position: absolute;
+    width: 65%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 12px;
+}
+
+/* Styles for panels */
+.panel {
+    padding: 3%;
+    width: 50%;
+    height: auto;
+    font-size: 25px;
+}
+
+.login-panel {
+    padding-top: 6%;
+    text-align: left;
+}
+.login-panel .login-notify {
+    font-size: 15px;
+    color: gray;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+.login-panel .forgetpw-notify {
+    font-size: 15px;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+.panel a {
+    text-decoration: none;
+    color: #232f3e;
+}
+
+.signup-panel {
+    text-align: center;
+    border-left: 1px solid #ccc;
+}
+.signup-panel .signup-notify {
+    font-size: 25px;
+    padding-top: 15%;
+    padding-bottom: 15%;
+}
+.info {
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    padding-top: 10%;
+}
+.info a {
+    padding-inline: 3%;
+}
+a:hover {
+    color: #febd69
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+button {
+    background-color: #232f3e;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 50%;
+}
+button:hover {
+    background-color: #febd69;
+    color: #000000;
+}
+
+@media screen and (max-width: 770px) {
+    /* switch to top/bottom orientation on smaller screens */
+    .container-login {
+        flex-direction: column;
+        width: 85%;
+    }
+    
+    .panel {
+        width: 85%; /* panels take up full width of container */
+    }
+
+    .signup-panel {
+        border-left: none;
+        border-top: #ccc 1px solid;
+    }
+
+    button {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .signup-panel .signup-notify {
+        padding-top: 5%;
+        padding-bottom: 5%;
+        font-size: 20px;
+    }
+
+    .signup-panel h2 {
+        display: none;
+    }
+  }

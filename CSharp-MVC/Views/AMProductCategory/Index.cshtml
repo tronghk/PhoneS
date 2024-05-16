@@ -1,0 +1,165 @@
+﻿ @*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ACategory.cshtml";
+    var listCate = ViewData["listCate"] as List<ProductCategoryVm>;
+    var length = 0;
+    if(listCate != null)
+    {
+        length = listCate.Count();
+    }
+    int indexPage = int.Parse("0" +ViewData["indexPage"]);
+    var row = length / 6;
+    if (row * 6 < length)
+        row = row + 1;
+        var result = "";
+    result = result + ViewData["result"];
+    var message = "" + ViewData["message"];
+}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h4 class="card-title">Thêm Loại Sản Phẩm</h4>
+                            <a asp-controller="AMProductCategory" asp-action="Create" >
+                             <button class="btn btn-primary btn-round ml-auto btn-add" data-toggle="modal" data-target="#addRowModal">
+                                <i class="bi bi-plus"></i>
+                                Thêm loại sản phẩm
+                            </button>
+                            </a>
+                           
+                        </div>
+                    </div>
+                    <div class="card-body">
+                            <div class="row m-2">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="add-row_length">
+                                        <label>Show
+                                            <select name="add-row_length" aria-controls="add-row" class="form-control form-control-sm">
+                                                <option value="10">10</option><option value="25">25</option><option value="50">50</option>
+                                                <option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6">
+                                                    <div id="add-row_filter" class="dataTables_filter">
+                                                        <label>Search:
+                                                            <form method="post" asp-controller="AMProductCategory" asp-action="Search">
+                                                            <input type="search" name="search"   class="form-control form-control-sm" placeholder="" aria-controls="add-row">
+                                                            </form>
+                            </label>
+                        </div>
+                        </div>
+                            </div>
+                            <table id="add-row" class="display table table-striped table-hover dataTable" role="grid" aria-describedby="add-row_info">
+                                <thead>
+                                    <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="add-row" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Mã: activate to sort column descending" style="width: 120px;">Mã</th>
+                                        <th class="sorting" tabindex="0" aria-controls="add-row" rowspan="1" colspan="1" aria-label="Tên: activate to sort column ascending" style="width: 199.475px;">Tên loại</th>
+
+                                        <th style="width: 150px;" class="sorting" tabindex="0" aria-controls="add-row" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Action</th></tr>
+                                </thead>
+                                <tfoot>
+                                    <tr><th rowspan="1" colspan="1">Mã</th><th rowspan="1" colspan="1">Tên Loại </th> <th rowspan="1" colspan="1">Action</th></tr>
+                                </tfoot>
+                                <tbody>                                                                    
+                                     @if(length >= 1)
+                                    {
+                                        for(int j = indexPage; j <= indexPage+5 && j <=length-1; j++)
+                                        {
+                                             <tr role="row" class="odd">
+                                                   <td class="sorting_1">@listCate[j].ProdCateID</td>  
+                                                    <td>@listCate[j].ProdCateName</td>
+                                                   
+                                                    
+                                                    <td>
+                                                        <div class="form-button-action">
+                                                            <button type="button" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"><a asp-controller="AMProductCategory" asp-action="Edit" asp-route-id="@listCate[j].ProdCateID">
+                                                                <i class="fa fa-edit"></i> edit
+                                                            </a></button>
+                                                            <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"><a asp-controller="AMProductCategory" asp-action="Delete" asp-route-id="@listCate[j].ProdCateID">
+                                                            <i class="fa fa-times"></i> delete</a>
+                                                            </button>
+                                            
+                                                        </div>  
+                                                    </td>            
+                                            </tr>
+                                        }
+                                    }
+    
+                                    </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="add-row_info" role="status" aria-live="polite">Showing @(indexPage/6+1) to @row of 6 entries</div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="add-row_paginate">
+                                         <ul class="pagination">
+                                         @if((indexPage) != 0)
+                                            {
+                                                 <li class="paginate_button page-item previous" id="add-row_previous">
+                                                        <a asp-controller="AMProductCategory" asp-action="index" asp-route-id="@(@indexPage-6)" aria-controls="add-row" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                                 </li>
+                                            }else{
+                                                 <li class="paginate_button page-item previous disabled" id="add-row_previous" >
+                                                        <a href="#" aria-controls="add-row" data-dt-idx="0" tabindex="0" class="page-link" >Previous</a>
+                                                 </li>
+                                            }
+                                            @for(int i = 1;i <= row; i++)
+                                            {
+                                                if(i == (indexPage / 6 + 1))
+                                                {
+                                                    <li class="paginate_button page-item active" >
+                                                        <a style="background-color: red !important" href="#" aria-controls="add-row" data-dt-idx="1" tabindex="@i" class="page-link">@i</a>
+                                                    </li> 
+                                                }else{
+                                                    <li class="paginate_button page-item active" >
+                                                            <a style="background-color: blue !important" asp-controller="AMProductCategory" asp-action="index" asp-route-id="@((i-1)*6)" aria-controls="add-row" data-dt-idx="1" tabindex="@i" class="page-link">@i</a>
+                                                    </li>
+                                                }
+                                            }
+                                            @if(indexPage+6 >= length)
+                                            {
+                                                <li class="paginate_button page-item next disabled" id="add-row_next">
+                                                        <a href="#" aria-controls="add-row" data-dt-idx="2" tabindex="1" class="page-link">Next</a>
+                                                    </li>
+                                            }else{
+                                                 <li class="paginate_button page-item next" id="add-row_next">
+                                                        <a asp-controller="AMProductCategory" asp-action="Index" asp-route-id="@(indexPage+6)" aria-controls="add-row" data-dt-idx="2" tabindex="1" class="page-link">
+                                                            Next
+                                                            </a>
+                                                    </li>
+                                            }
+                                    </ul>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                            <div class="message-action" style="width:100%;display:flex;justify-content:center">
+                <div id="msgAlert" class="panel-body text-center" style="position: fixed;top:0;z-index: 1001; width:130%;">
+            @if(result != "")
+                 {
+                <div class="form-alert">
+                    <div class="alert @TempData["AlertType"] hide">
+                        @message
+                    </div>
+                </div>
+                 }
+            </div>
+            </div>
+            
+    <script>
+        setTimeout(function(){
+             $("#msgAlert").fadeOut('slow');
+        },2000); 
+       
+    </script>

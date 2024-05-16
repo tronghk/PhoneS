@@ -1,0 +1,522 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Home Page";
+    var listProduct = ViewBag.listProduct;
+    var listCategory = ViewBag.listCategory;
+    Layout = "~/Views/Shared/UHomeLayout.cshtml";
+}
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session.GetString("customer");
+    var customer = new UserVm();
+    if (session != null)
+    {
+        customer = JsonConvert.DeserializeObject<UserVm>(session);
+    }
+}
+
+@model UHomeVm;
+
+<head>
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<section class="main-products d-flex justify-content-center">
+    <div class="container-fluid">
+        <div class="row justify-content-evenly">
+            <!-- Sản phẩm chính số 1-->
+            <div class="mainA col-6">
+                <!-- Link ảnh sản phẩm chính số 1-->
+                <img src="~/Image/home/main-products/1.jpg" class="img-fluid" alt="">
+                <div class="info-main1 position-absolute start-1">
+                    <h6>SUPERCHARGED FOR PROS.</h6>
+                    <h1>iPhone X</h1>
+                    <p>From $999.00 or $41.62/mo.<br>for 24 mo. Footnote*</p>
+                    <!-- Button dẫn tới sản phẩm chính số 1 (IPHONE X) -->
+                    <button class="btn">BUY NOW</button>
+                </div>
+            </div>
+            <div class="mainB col-3">
+                <div class="row g-4">
+                    <!-- Sản phẩm chính số 2-->
+                    <a href="LINK THỂ LOẠI APPLE">
+                        <div class="mini col-12">
+                            <!-- Link ảnh sản phẩm chính số 2-->
+                            <img src="~/Image/home/main-products/2-iphones.jpg" class="img-fluid" alt="">
+                            <div class="info-main2 position-absolute start-1">
+                                <h6>FREE ENGRAVING</h6>
+                                <h4>iPhones</h4>
+                                <p>High-fidelity playback<br>& ultra-low distortion</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Sản phẩm chính số 3-->
+                    <a href="LINK THỂ LOẠI SÁMSUNG">
+                        <div class="mini col-12">
+                            <!-- Link ảnh sản phẩm chính số 3-->
+                            <img src="~/Image/home/main-products/3-samsung.jpg" class="img-fluid" alt="">
+                            <div class="info-main2 position-absolute start-1">
+                                <h6>BEST SALE</h6>
+                                <h4>Samsung Galaxy</h4>
+                                <p>From $1699.00<br>or $64.62/mo.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="mainB col-3">
+                <div class="row g-4">
+                    <!-- Sản phẩm chính số 4-->
+                    <a href="LINK THỂ LOẠI XIAOMI">
+                        <div class="mini col-12">
+                            <!-- Link ảnh sản phẩm chính số 4-->
+                            <img src="~/Image/home/main-products/4-xiaomi.jpg" class="img-fluid" alt="">
+                            <div class="info-main2 position-absolute start-1">
+                                <h6>15% OFF</h6>
+                                <h4>Xiaomi</h4>
+                                <p>Shop the latest band styles<br>and colors.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Sản phẩm chính số 5-->
+                    <a href="LINK THỂ LOẠI HUAWEI">
+                        <div class="mini col-12">
+                            <!-- Link ảnh sản phẩm chính số 5-->
+                            <img src="~/Image/home/main-products/5-huawei.jpg" class="img-fluid" alt="">
+                            <div class="info-main2 position-absolute start-1">
+                                <h6>NEW ARRIVAL</h6>
+                                <h4>Huawei</h4>
+                                <p>From $599 or $49/mo.<br>for 12 mo. *</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Thế mạnh cửa hàng HARDCODE-->
+<section class="strengths">
+    <div class="container-fluid bg-light">
+        <div class="row justify-content-around">
+            <div class="col col-2">
+                <div class="row align-items-center">
+                    <div class="icon col-sm-2">
+                        <i class="fas fa-truck fa-2x mb-2"></i>
+                    </div>
+                    <div class="col-sm-10 text-left">
+                        <div class="title"><strong>Free Shipping</strong></div>
+                        <div class="info">On all orders over $50</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-2">
+                <div class="row align-items-center">
+                    <div class="icon col-sm-2">
+                        <i class="fas fa-gift fa-2x mb-2"></i>
+                    </div>
+                    <div class="col-sm-10 text-left">
+                        <div class="title"><strong>Free Gift</strong></div>
+                        <div class="info">With every purchase</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-2">
+                <div class="row align-items-center">
+                    <div class="icon col-sm-2">
+                        <i class="fas fa-credit-card fa-2x mb-2"></i>
+                    </div>
+                    <div class="col-sm-10 text-left">
+                        <div class="title"><strong>Easy Payments</strong></div>
+                        <div class="info">With secure checkout</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-2">
+                <div class="row align-items-center">
+                    <div class="icon col-sm-2">
+                        <i class="fas fa-headphones fa-2x mb-2"></i>
+                    </div>
+                    <div class="col-sm-10 text-left">
+                        <div class="title"><strong>24/7 Support</strong></div>
+                        <div class="info">Via phone or email</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-2">
+                <div class="row align-items-center">
+                    <div class="icon col-sm-2">
+                        <i class="fas fa-undo fa-2x mb-2"></i>
+                    </div>
+                    <div class="col-sm-10 text-left">
+                        <div class="title"><strong>Easy Returns</strong></div>
+                        <div class="info">Within 30 days free</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Thể loại sản phẩm HARDCODE-->
+<section class="categories ">
+    <div class="row">
+        <div class="col-12">
+            <div class="cate owl-carousel owl-theme">
+                @foreach (var obj in Model.Categories)
+                {
+                    <a href="@Url.Action("Index", "UProducts", new { categoryId = obj.ProdCateID })">
+                        <div class="item mb-4">
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-7">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@obj.ProdCateName</h5>
+                                            @{
+                                                int count = 0;
+                                            }
+
+                                            @foreach (var p in Model.Products)
+                                            {
+                                                if (p.ProdCateName.Equals(obj.ProdCateName))
+                                                    count += 1;
+                                            }
+                                            <p class="card-text"><small class="text-body-secondary">@count items</small></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        @{
+                                            String imgsource = obj.ProdCateName + ".png";
+                                        }
+
+                                        <img src="~/Image/home/categories/@imgsource" class="img card-img " alt="...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sản phẩm mới nổi bật HARDCODE-->
+<section class="new-product">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="new owl-carousel owl-theme">
+                    <!-- Sản phẩm số 1-->
+                    <a href="LINK SẢN PHẨM SỐ 1">
+                        <div class="item">
+                            <div class="card text-bg-dark">
+                                <!-- Link ảnh sản phẩm mới số 1-->
+                                <img src="~/Image/home/subbanner-01.webp" class="card-img" alt="...">
+                                <div class="info-new-product card-img-overlay" style="color:white">
+                                    <div class="type">BIG SCREEN</div>
+                                    <div class="name">Smart Watch Series 7</div>
+                                    <div class="price">From 399$</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Sản phẩm số 2-->
+                    <a href="LINK SẢN PHẨM SỐ 1">
+                        <div class="item">
+                            <div class="card text-bg-dark">
+                                <!-- Link ảnh sản phẩm mới số 2-->
+                                <img src="~/Image/home/subbanner-02.webp" class="card-img" alt="...">
+                                <div class="info-new-product card-img-overlay">
+                                    <div class="type">BIG SCREEN</div>
+                                    <div class="name">Smart Watch Series 7</div>
+                                    <div class="price">From 399$</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Sản phẩm số 3-->
+                    <a href="LINK SẢN PHẨM SỐ 1">
+                        <div class="item">
+                            <div class="card text-bg-dark">
+                                <!-- Link ảnh sản phẩm mới số 3-->
+                                <img src="~/Image/home/subbanner-03.webp" class="card-img" alt="...">
+                                <div class="info-new-product card-img-overlay">
+                                    <div class="type">BIG SCREEN</div>
+                                    <div class="name">Smart Watch Series 7</div>
+                                    <div class="price">From 399$</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Sản phẩm số 4-->
+                    <a href="LINK SẢN PHẨM SỐ 1">
+                        <div class="item">
+                            <div class="card text-bg-dark">
+                                <!-- Link ảnh sản phẩm mới số 4-->
+                                <img src="~/Image/home/subbanner-04.webp" class="card-img" alt="...">
+                                <div class="info-new-product card-img-overlay">
+                                    <div class="type">BIG SCREEN</div>
+                                    <div class="name">Smart Watch Series 7</div>
+                                    <div class="price">From 39$</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sản phẩm đặc biệt-->
+<section class="special-products">
+    <!-- Tiêu đề-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-5" style="padding-bottom: 0.5rem;">
+                <h2>Our Products</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danh mục các sản phẩm đặc biệt-->
+    <div class="row">
+        <div class="col-12">
+            <div class="sprod owl-carousel owl-theme">
+                @{
+                    var modelList = Model.Products.ToList();
+                }
+
+                @for (int i = 0; i < modelList.Count; i += 2)
+                {
+                    <div class="item">
+                        <a href="">
+                            <!-- Sản phẩm hàng 1-->
+                            <div class="card">
+                                <div class="row g-0">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <!-- Link ảnh sản phẩm đặc biệt-->
+                                        <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@modelList[i].ProductID">
+                                            <img src="~/Image/home/products/@modelList[i].Picture" class="card-img-top" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <!-- Thông tin sản phẩm-->
+                                        <div class="card-body">
+                                            <!-- Thương hiệu-->
+                                            <div class="brand">@modelList[i].ProdCateName</div>
+                                            <!-- Tên sản phẩm-->
+                                            <div class="name">@modelList[i].ProductName</div>
+                                            <!-- Đánh giá-->
+                                            <div class="rating">
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star-half" style="color: #eeff00;"></i>
+                                            </div>
+                                            <!-- Giá tiền-->
+                                            <div class="price">@modelList[i].Price</div>
+                                            <!-- Button Thêm vào giỏ hàng-->
+                                            @if(session != null)
+                                            {
+                                                <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid = @modelList[i].ProductID})">
+                                                    <button class="btn">
+                                                        ADD TO CART
+                                                    </button>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="USignin" asp-action="Index">
+                                                    <button class="btn">
+                                                        ADD TO CART
+                                                    </button>
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+
+                        <a href="">
+                            <!-- Sản phẩm hàng 2-->
+                            <div class="card">
+                                <div class="row g-0">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <!-- Link ảnh sản phẩm đặc biệt-->
+                                        <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@modelList[i+1].ProductID">
+                                            <img src="~/Image/home/products/@modelList[i + 1].Picture" class="card-img-top" alt="...">
+                                        </a>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <!-- Thông tin sản phẩm-->
+                                        <div class="card-body">
+                                            <!-- Thương hiệu-->
+                                            <div class="brand">@modelList[i+1].ProdCateName</div>
+                                            <!-- Tên sản phẩm-->
+                                            <div class="name">@modelList[i+1].ProductName</div>
+                                            <!-- Đánh giá-->
+                                            <div class="rating">
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star" style="color: #eeff00;"></i>
+                                                <i class="fa-solid fa-star-half" style="color: #eeff00;"></i>
+                                            </div>
+                                            <!-- Giá tiền-->
+                                            <div class="price">@modelList[i+1].Price</div>
+                                            <!-- Button Thêm vào giỏ hàng-->
+                                            <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid = @modelList[i+1].ProductID})">
+                                                <button class="btn">
+                                                    ADD TO CART
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Các nhãn hiệu sản phẩm HARDCODE-->
+<section class="brand-list">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="brand owl-carousel owl-theme">
+                    <div class="item">
+                        <img src="~/Image/home/brand-01.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-02.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-03.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-04.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-05webp.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-07.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-08.webp" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="~/Image/home/brand-09.webp" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blogs -->
+<section class="news">
+    <!-- Tiêu đề-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-5" style="padding-bottom: 0.5rem;">
+                <h2>Our Latest News</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="new owl-carousel owl-theme">
+                <!-- Blog số 1-->
+                <div class="item">
+                    <div class="card">
+                        <!-- Link ảnh blog-->
+                        <img src="~/Image/home/blog_1.webp" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <!-- Ngày viết blog-->
+                            <div class="date">11 JUNE, 2022</div>
+                            <!-- Tiêu đề-->
+                            <div class="title">SeCtmISkJkNUaaKMoLD0</div>
+                            <!-- Nội dung blog-->
+                            <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
+                            <!-- Nút đọc thêm-->
+                            <button class="btn">READ MORE</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog số 2-->
+                <div class="item">
+                    <div class="card">
+                        <!-- Link ảnh blog-->
+                        <img src="~/Image/home/blog_2.webp" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <!-- Ngày viết blog-->
+                            <div class="date">11 JUNE, 2022</div>
+                            <!-- Tiêu đề-->
+                            <div class="title">SeCtmISkJkNUaaKMoLD0</div>
+                            <!-- Nội dung blog-->
+                            <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
+                            <!-- Nút đọc thêm-->
+                            <button class="btn">READ MORE</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog số 3-->
+                <div class="item">
+                    <div class="card">
+                        <!-- Link ảnh blog-->
+                        <img src="~/Image/home/blog_3.webp" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <!-- Ngày viết blog-->
+                            <div class="date">11 JUNE, 2022</div>
+                            <!-- Tiêu đề-->
+                            <div class="title">SeCtmISkJkNUaaKMoLD0</div>
+                            <!-- Nội dung blog-->
+                            <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
+                            <!-- Nút đọc thêm-->
+                            <button class="btn">READ MORE</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog số 4-->
+                <div class="item">
+                    <div class="card">
+                        <!-- Link ảnh blog-->
+                        <img src="~/Image/home/blog_4.webp" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <!-- Ngày viết blog-->
+                            <div class="date">11 JUNE, 2022</div>
+                            <!-- Tiêu đề-->
+                            <div class="title">SeCtmISkJkNUaaKMoLD0</div>
+                            <!-- Nội dung blog-->
+                            <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
+                            <!-- Nút đọc thêm-->
+                            <button class="btn">READ MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
+    <script src="~/js/home.js" asp-append-version="true"></script>
+}

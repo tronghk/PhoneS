@@ -1,0 +1,316 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@model CSharp_MVC.Models.ProductAll;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    Layout = null;
+    var session = HttpContextAccessor.HttpContext.Session.GetString("customer");
+
+    var customer = new UserVm();
+    if (session != null)
+    {
+        customer = JsonConvert.DeserializeObject<UserVm>(session);
+    }
+    var product = ViewData["product"] as ProductAll;
+    var listCate = ViewData["listCate"] as List<ProductCategoryVm>;
+
+}  
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid nav_container">
+            <div class="menu">
+                <div class="menu-header">
+                    <a  asp-controller="AManager" asp-action="Index" class="menu-header-logo d-inline-block font-"> <h2>NIEN HOEP</h2>
+                    </a>
+                   
+                </div>
+                <div class="menu-bar">
+                <div class="menu-author w-100 p-3 rounded">
+
+                        <div class="author-image">
+                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" style="width: 48px;"
+                            alt="Avatar" />
+                        </div>
+                        <div class="author-inf">
+                        @if (session != null)
+                        {
+                            
+                        }
+                        <p class="author-name si">DoAnMonHoc</p>
+                         @if (session != null)
+                        {
+                            <p class="author-em">@customer.Account</p>
+                        }
+                        else{
+                            <p class="author-em">Admin</p>
+                        }
+                        </div>
+
+                </div>
+                <div class="menu-content">
+                        <ul class="list-group nav-menu-list">
+                            <li class="list-group-item menu-item">E-Commerce</li>
+                            <li class="list-group-item menu-item rounded-pill" id="tag-dashbord">
+                                <a  asp-controller="AStatis" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                <span class="rounded-circle icon-link"><i class="bi bi-bar-chart "></i></span>
+                                <span class="icon-title">Thống kê</span>
+                            </a>
+
+                            </li>
+
+                            <li class="list-group-item menu-item" onclick="openTab(id)" id="tag-order">
+                                <a href="#" class="menu-icon-sub">
+                                    <span class="rounded-circle icon-link"><i class="bi bi-music-note"></i></span>
+                                    <span class="icon-title">Danh Mục</span>
+                                    <span class="icon-link"> <i class="icon-next bi bi-arrow-right"></i></span>
+                                </a>
+                                <ul class="list-group display-tag-none" myname="False">
+                                    <li class="list-group-item menu-item rounded-pill " id="tag-type">
+                                        <a asp-controller="AMProductCategory" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Loại sản phẩm</span>
+                                        </a>
+            
+                                    </li>
+                                    <li class="list-group-item menu-item rounded-pill " id="tag-listView">
+                                        <a asp-controller="AProductManager" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Sản phẩm</span>
+                                        </a>
+            
+                                    </li>
+                                    <li class="list-group-item menu-item rounded-pill"  id="tag-details">
+                                        <a asp-controller="ABillManager" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Hóa đơn</span>
+                                        </a>
+            
+                                    </li>
+                                    <li class="list-group-item menu-item rounded-pill"  id="tag-promotion">
+                                        <a asp-controller="AProductPromotion" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Khuyến mãi</span>
+                                        </a>
+            
+                                    </li>
+                                    <li class="list-group-item menu-item rounded-pill"  id="tag-voucher">
+                                        <a asp-controller="AVoucherManager" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Voucher</span>
+                                        </a>
+            
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li class="list-group-item menu-item" onclick="openTab(id)" id="tag-product">
+                                <a href="#" class="menu-icon-sub">
+                                    <span class="rounded-circle icon-link"><i class="bi bi-person"></i></span>
+                                    <span class="icon-title">Người dùng</span>
+                                    <span class="icon-link"> <i class="icon-next bi bi-arrow-right"></i></span>
+                                </a>
+                                <ul class="list-group display-tag-none" myname="False">
+                                    <li class="list-group-item menu-item rounded-pill" id="tag-listView">
+                                        <a asp-controller="AEmployeeManager" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Nhân viên</span>
+                                        </a>
+            
+                                    </li>
+                                    <li class="list-group-item menu-item rounded-pill" id="tag-productDetail">
+                                        <a  asp-controller="ACustomerManager" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                            <span class="icon-title sub-list">Khách hàng</span>
+                                        </a>
+            
+                                    </li>
+                                </ul>
+
+                            </li>
+
+                            <li class="list-group-item menu-item rounded-pill" id="tag-customer">
+                                <a  asp-controller="AUserManager" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                    <span class="rounded-circle icon-link"><i class="bi bi-person-badge"></i></span>
+                                    <span class="icon-title">Tài khoản</span>
+                                </a>
+                            
+
+                            </li>
+                            <li class="list-group-item menu-item rounded-pill" id="tag-role">
+                                <a  asp-controller="ARole" asp-action="Index"  class="menu-icon-sub rounded-pill">
+                                    <span class="rounded-circle icon-link"><i class="bi bi-person-badge"></i></span>
+                                    <span class="icon-title">Quyền</span>
+                                </a>
+                            
+
+                            </li>
+                            
+                        </ul>
+                </div>
+                </div>
+            </div>
+            <div class="content">
+
+                <!-- thanh tìm kiếm và user -->
+                <div class="content-slider_bar">
+                    <div class="input-group">
+                        <div class="input-group-prepend rounded">
+                            <button type="submit" class="btn btn-search pr-1">
+                                <i class="rounded bi bi-search"></i>
+                            </button>
+                        </div>
+                        <input type="text" placeholder="Search ..." class="form-control">
+                    </div>
+                    <div class="author-logout" style="position: relative;">
+                        <i class="bi bi-person"></i>
+                        <div class="log-out" >Log Out
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chuyển hướng con trỏ -->
+                <div class="page-header">
+                    <h4 class="page-title m-1">Dữ liệu</h4>
+                        <ul class="breadcrumbs">
+                            <li class="nav-home">
+                                <a href="#">
+                                    <i class="bi bi-house"></i>
+                                </a>
+                            </li>
+                            <li class="separator">
+                                <i class="bi bi-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Danh mục</a>
+                            </li>
+                            <li class="separator">
+                                <i class="bi bi-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Sản phẩm</a>
+                            </li>
+                        </ul>
+                </div>
+
+                <!-- Content -->
+                <div class="card">
+                 
+                </div>
+            </div>
+  
+        </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Trợ giúp
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Giấy phép
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright ml-auto">
+                        2023, made with <i class="bi bi-heart text-danger"></i> by <a href="">TeamPro</a>
+                    </div>				
+                </div>
+            </footer>
+       
+       
+    </div>
+       <form class="form-add align-content-center justify-content-center " method="post" asp-controller="AProductManager" asp-action="EditProduct">
+            <div class="form-group add-form" >
+            <a asp-controller="AProductManager" asp-action="Index"><i class="out bi bi-x-circle-fill"></i></a>
+            <h1 class="card-title text-center m-lg-3 mt-0" >
+                Thông tin sản phẩm
+            </h1>
+            <span>Mã sản phẩm:</span> <input readonly="readonly" asp-for="ProductID" id="ProductID" value="@product.ProductID" type="number"> 
+            <span>Tên sản phẩm:</span> <input value="@product.ProductName" asp-for="ProductName"  id="NameProduct" type="text" required="required"><br><br>
+    
+            <span style="margin-left: 32px;">Số lượng:</span> <input asp-for="Quantity"  value="@product.Quantity" type="number" required="required">
+            <span style="margin-left: 73px;">Giá:</span> <input asp-for="Price" value="@product.Price"  type="number" required="required"> <br><br>
+                       
+            <span style="margin-left: 171px;">Loại sản phẩm: </span>
+            <select asp-for="Category" id="Category"  name="Category" >
+                
+                @if(listCate != null)
+                {
+                    var cate = ViewData["cate"];
+                    <option>@cate</option>
+                    @foreach(ProductCategoryVm value in listCate)
+                    {
+                        if(cate != value.ProdCateName){
+                            <option>@value.ProdCateName</option>
+                        }
+                    }
+                }
+                else
+                {
+                    <option>Test null</option>
+                }
+            </select>   
+            <br>
+            <span>Mô tả:</span> <br> <textarea name="Description" id="Description" cols="77" rows="3"> @product.Description </textarea> <br>
+            <h1 class="card-title text-center m-lg-3 mt-0" >
+                Thông tin cấu hình
+            </h1>
+            <span>Màn hình:</span> <input asp-for="Screen" value="@product.Screen"  required="required"  type="text">
+            <span>Hệ điều hành:</span> <input asp-for="OS" value="@product.OS"  required="required"  type="text"><br><br>
+            <span>Camera trước:</span> <input asp-for="FrontCam" value="@product.FrontCam"  required="required" type="text">
+            <span>Camera sau:</span> <input asp-for="BackCam" value="@product.BackCam"  required="required" type="text">
+            <br><br>
+            <span>Chip:</span> <input asp-for="Chip"  value="@product.Chip"  required="required" type="text">
+            <span>Ram:</span> <input asp-for="Ram" value="@product.Ram"  required="required"  type="text">
+            <br><br>
+            <span>Bộ nhớ:</span> <input asp-for="Storage" value="@product.Storage"  required="required"  type="text">
+            <span>Sim</span> <input  asp-for="SIM" value="@product.SIM"  required="required" type="text">
+            <span>Pin:</span> <input asp-for="Battery" value="@product.Battery"   required="required" type="text">
+            
+            <div class="optionAdd">
+                <div class="d-block">
+                    <br><br>
+                    Lựa chọn: <br>
+                    <a  >
+                        <button class="disabled btn btn-primary btn-round ml-auto text-center " style="width: 90px; height: 40px; margin-top: 15px;">
+                        <i class="bi bi-plus"></i>
+                        Thêm
+                        </button>
+                    </a>
+    
+                    <button asp-controller="AProductManager" asp-action="EditProduct"  class="btn btn-primary btn-round ml-auto text-center " style="width: 90px; height: 40px; margin-top: 15px;">
+                        <i class="bi bi-plus"></i>
+                        Sửa
+                    </button>
+                    <button class=" disabled btn btn-primary btn-round ml-auto text-center " style="width: 90px; height: 40px; margin-top: 15px;">
+                        <i class="bi bi-plus"></i>
+                        Xóa
+                    </button>
+                </div>
+                <div class="image-add" style="position: relative;">
+                    <img style="width:150px;height:150px" class="update-image" src="/Image/home/products/@(@product.Picture)" alt="Image preview...">
+                    <input onchange="readUrl(this)" class="text-center" style="position: absolute; bottom: -30px; border: none;left:24%;width:82px" id="Picture" value="@product.Picture" asp-for="Picture"  type="file"> 
+                </div>
+               
+                
+            </div>
+            
+    
+        </div>
+       </form>
+    <script src="~/js/main.js"></script> 
+</body>
+     
