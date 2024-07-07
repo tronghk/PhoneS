@@ -13,6 +13,17 @@
     </div>
 }
 <body>
+
+    <style>
+        .nice-select{
+            width:100%;
+
+        }
+
+        .list{
+            width: 100%;
+        }
+    </style>
     <div class="sign-up-background pt-4 pb-4">
         <div class="sign-up-wrapper">
             <div class="sign-up-info mx-auto col-10 col-md-8 col-lg-6">
@@ -21,23 +32,33 @@
                     <div class="justify-content-end">
 
                         <label asp-for="Account" class="form-label">Email</label>
-                        <input asp-for="Account" type="email" class="form-control"></input>
+                        <input required asp-for="Account" type="email" class="form-control"></input>
                         <span asp-validation-for="Account" class="text-danger"></span>
 
                         <label asp-for="Password" class="form-label">Password</label>
-                        <input asp-for="Password" type="password" class="form-control"></input>
+                        <input minLength="6" required asp-for="Password" type="password" class="form-control"></input>
                         <span asp-validation-for="Password" class="text-danger"></span>
 
                         <label asp-for="FullName" class="form-label">Full Name</label>
-                        <input asp-for="FullName" class="form-control"></input>
+                        <input required asp-for="FullName" class="form-control"></input>
                         <span asp-validation-for="FullName" class="text-danger"></span>
 
                         <label asp-for="Nationality" class="form-label">Nationality</label>
-                        <input asp-for="Nationality" class="form-control"></input>
-                        <span asp-validation-for="Nationality" class="text-danger"></span>
+                        <br />
+                        <select asp-for="Nationality" >
+                            <option>
+                                Việt Nam
+                            </option>
+                            <option>
+                                US
+                            </option>
+                        </select>
+                        <br />
+                        <br />
+                       
 
                         <label asp-for="Phone" class="form-label">Phone</label>
-                        <input asp-for="Phone" class="form-control"></input>
+                        <input type="number" maxlength="10" asp-for="Phone" class="form-control"></input>
                         <span asp-validation-for="Phone" class="text-danger"></span>
 
                         <label asp-for="Address" class="form-label">Address</label>

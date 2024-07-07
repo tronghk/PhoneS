@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230505100510_AddCartToDatabase")]
-    partial class AddCartToDatabase
+    [Migration("20240707141336_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,20 +66,16 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartID"), 1L, 1);
 
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("CartID");
-
-                    b.HasIndex("CustomerID");
-
-                    b.HasIndex("ProductID");
 
                     b.ToTable("Cart");
                 });
@@ -421,25 +417,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Voucher");
                 });
 
-            modelBuilder.Entity("Entity.Cart", b =>
-                {
-                    b.HasOne("Entity.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entity.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Entity.Product", b =>
                 {
                     b.HasOne("Entity.ProductCategory", "ProductCategory")
@@ -453,21 +430,17 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entity.ProductBill", b =>
                 {
-                    b.HasOne("Entity.Bill", "Bill")
+                    b.HasOne("Entity.Bill", null)
                         .WithMany("ProductBill")
                         .HasForeignKey("BillID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entity.Product", "Product")
+                    b.HasOne("Entity.Product", null)
                         .WithMany("ProductBill")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bill");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Entity.ProductImage", b =>

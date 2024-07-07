@@ -61,8 +61,8 @@ body {
 }
 .signup-panel .signup-notify {
     font-size: 25px;
-    padding-top: 15%;
-    padding-bottom: 15%;
+    padding-top: 2%;
+    padding-bottom: 8%;
 }
 .info {
     text-align: center;
@@ -90,10 +90,33 @@ button {
     background-color: #232f3e;
     color: #fff;
     border: none;
-    padding: 12px 20px;
-    border-radius: 4px;
+    padding: 8px;
+    border-radius: 8px;
     cursor: pointer;
-    width: 50%;
+    width: 40%;
+}
+.glitter {
+    font-size: 40px;
+    font-weight: bold;
+    background: linear-gradient(to right, #ff00cc, #3333ff, #ffff00, #ff33cc, #00ffcc);
+    background-size: 400% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glitter 10s infinite;
+}
+
+@keyframes glitter {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 button:hover {
     background-color: #febd69;

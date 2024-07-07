@@ -3,42 +3,74 @@
 @{
     ViewData["Title"] = "Login";
     Layout = null;
+   
 }
 <head>
+
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <div class="banner-login">
     <div class="container-login">
         <!-- Login panel -->
         <div class="panel login-panel">
-            <h2>Login</h2>
-            <div class="login-notify">Login to NienHoep to continue</div>
+            <h2 style="color: #2980b9; font-size:40px">Login</h2>
+           
 
-            <form class="form-control" asp-controller="USignin" asp-action="Index" method="post">
+            <form class="form-control" style="width:100%; margin-left:0px;" required asp-controller="USignin" asp-action="Login" method="post">
                 <!-- Tài khoản -->  
                 <input type="text" placeholder="Enter Username" asp-for="Account" required>
                 <span asp-validation-for="Account" class="text-danger"></span>
                 <!-- Mật khẩu-->
-                <input type="password" placeholder="Enter Password" asp-for="Password" required>
+                <input minlength="6" type="password" placeholder="Enter Password" asp-for="Password" required>
                 <span asp-validation-for="Password" class="text-danger"></span>
                 <!-- Quên mật khẩu-->
                 <div class="forgetpw-notify">Forget your password? <a href="">Click here!</a></div>
                 <!-- Button đăng nhập-->
-                <button type="submit">Login</button>
+                <button style="border-radius: 4px;color: #fff;" type="submit">Login</button>
             </form>
         </div>
 
         <!-- Welcome + signup panel -->
         <div class="panel signup-panel">
-            <h2>Welcome to NienHoep!</h2>
+            <h2 class="glitter"> Welcome to ShoeNH!</h2>
             <div class="signup-notify">First time here? Signup for a brand new account right now!</div>
+            <form asp-action="SignUp" asp-controller="USignup" method="post">
+
+                <button style="border-radius: 4px;color: #fff;" type="submit">Sign up</button>
+            </form>
             <!-- Button đăng kí -->
-            <button asp-action="Index" asp-controller="USignup"><a class="button" asp-action="Index" asp-controller="USignup" style="color:white">Sign up</a></button>
+            
             <div class="info"><a href="">Privacy Policy</a><a href="">Terms & Conditions</a></div>
         </div>
 
     </div>
 </div>
+
+<div class="message-action" style="width:100%;display:flex;justify-content:center">
+    <div id="msgAlert" class="panel-body text-center" style="position: fixed;top:0;z-index: 1001; width:130%;">
+        @if (TempData["Message"] != null)
+        {
+            <div class="form-alert">
+                <div class="alert @TempData["AlertType"] hide">
+                    Đăng ký thành công
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        $("#msgAlert").fadeOut('slow');
+    }, 2000);
+
+</script>
 @section Scripts {
     <script src="~/js/login.js" asp-append-version="true"></script>
 }

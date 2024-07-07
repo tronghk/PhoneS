@@ -21,10 +21,18 @@ namespace CSharp_MVC.Controllers
         }
         public IActionResult Index()
         {
+            string message = TempData["signup"] as string;
+
+            if (message != null)
+            {
+                TempData["Message"] = "Đăng ký thành công!";
+            }
+
+
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] Signin request)
+        public async Task<IActionResult> Login([FromForm] Signin request)
         {
             if (!ModelState.IsValid)
             {
@@ -38,16 +46,16 @@ namespace CSharp_MVC.Controllers
                 ModelState.AddModelError("", "Sai tài khoản hoặc mật khẩu");
                 return View();
             }
-            bool isPasswordCorrect = BCrypt.Net.BCrypt.Verify(Password, user.Password);
-            if (!isPasswordCorrect)
+            if(user.Account != Account || user.Password != Password)
             {
                 ModelState.AddModelError("", "Sai tài khoản hoặc mật khẩu");
                 return View();
             }
+           
             var customerInformation = JsonConvert.SerializeObject(user);
             HttpContext.Session.SetString("customer", customerInformation);
             var role = _roleSerivce.GetByRoleId(user.RoleId);
-            if (role.RoleName == "admin")
+            if (role.RoleName == "Admin")
             {
                 return RedirectToAction("Index", "AManager");
             }

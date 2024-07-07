@@ -28,6 +28,12 @@ namespace CSharp_MVC.Controllers
             }
             return View();  
         }
+
+        [HttpPost]
+        public IActionResult SignUp()
+        {
+            return RedirectToAction("Index", "USignup");
+        }
         [HttpPost]
         public async Task<IActionResult> Index(Signup user)
         {
@@ -36,11 +42,11 @@ namespace CSharp_MVC.Controllers
                 return View(user);
             }
             string password = user.Password;
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+          //  string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             var newuser = new User()
             {
                 Account = user.Account,
-                Password = hashedPassword
+                Password = password
             };
             var newcustomer = new Customer()
             {
@@ -56,8 +62,8 @@ namespace CSharp_MVC.Controllers
                 ModelState.AddModelError("", "Account already existed !");
                 return View();
             }
-            TempData["result"] = "Sign up successfully !";
-            return RedirectToAction("Index", "USignup");
+            TempData["signup"] = "success";
+            return RedirectToAction("Index", "USignin");
 
         }
     }
