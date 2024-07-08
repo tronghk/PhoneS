@@ -24,5 +24,11 @@ namespace Service
         User GetByUserId(int idUser);
         public User GetByUserAccount(string user);
         IEnumerable<User> search(string name);
+
+        public Task<string> ForgotPassword(string email);
+
+        public Task<User> ForgotPassword(string email, string code );
+
+        public Task<string> ChangePassword(string email, string code, string password);
     }
 }

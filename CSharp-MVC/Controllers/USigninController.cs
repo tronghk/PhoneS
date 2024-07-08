@@ -25,7 +25,7 @@ namespace CSharp_MVC.Controllers
 
             if (message != null)
             {
-                TempData["Message"] = "Đăng ký thành công!";
+                TempData["Message"] = message;
             }
 
 

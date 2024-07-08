@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.FileProviders;
 using Service;
 using Service.implementation;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IProductSaleService, ProductSaleService>();
 builder.Services.AddScoped<IUnityService, UnityService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<Service.implementation.IEmailSender, EmailSenderService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession(options =>

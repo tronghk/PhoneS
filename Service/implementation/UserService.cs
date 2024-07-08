@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Entity;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,13 @@ namespace Service.implementation
     public class UserService : IUserService
     {
         private ApplicationDbContext _context;
-        public UserService(ApplicationDbContext context)
+        readonly private IEmailSender _emailSender;
+        readonly private ICustomerService _customer;
+        public UserService(ApplicationDbContext context, IEmailSender emailSender, ICustomerService customer)
         {
             _context = context;
+            _emailSender = emailSender;
+            _customer = customer;
         }
         public async Task<bool> CreateAsync(User user)
         {
@@ -79,6 +84,7 @@ namespace Service.implementation
             }
             var newuser = new User()
             {
+                ForgotPassowrd = "",
                 Account = user.Account,
                 Password = user.Password,
                 RoleId = 2
@@ -136,12 +142,12 @@ namespace Service.implementation
         }
         public User GetByUserId(int idUser)
         {
-            return _context.TaiKhoan.Where(x => x.UserID == idUser).FirstOrDefault();
+            return _context.TaiKhoan.Where(x => x.UserID == idUser).FirstOrDefault()!;
         }
 
         public User GetByUserAccount(string user)
         {
-            return _context.TaiKhoan.Where(x => x.Account == user).FirstOrDefault();
+            return _context.TaiKhoan.Where(x => x.Account == user).FirstOrDefault()!;
         }
 
         public async Task <string> UpdateAsync(User user)
@@ -182,6 +188,81 @@ namespace Service.implementation
             }
 
             return result;
+
+        }
+
+        public async Task<string> ForgotPassword(string email)
+        {
+
+            if (!checkUser(email))
+            {
+                return "error";
+            }
+            string code = RandomCode();
+
+            User user = GetByUserAccount(email);
+            user.ForgotPassowrd = code;
+             await UpdateAsync(user);
+            string name = _customer.GetByCustomerUserId(user.UserID + "").FullName!;
+            string subject = "Quên mật khẩu - Mộng Mơ";
+            string content = " Chào " + name + ",\n"
+                + "Cảm ơn bạn đã sử dụng phần mềm của chúng tôi, mã code quên mật khẩu của bạn là "+ code
+                + "\n Cảm ơn bạn đã dùng website của chúng tôi";
+
+            await _emailSender.SendEmailAsync(email, subject, content);
+            return "Vui lòng kiểm tra mail";
+        }
+        public string RandomCode()
+        {
+            string s = "";
+            Random random = new Random();
+            int i = 6;
+            while (i > 0)
+            {
+                s = s + random.Next(9);
+                i--;
+            }
+            return s;
+        }
+        public bool checkUser(string email)
+        {
+
+            foreach (var value in _context.TaiKhoan)
+            {
+                if (value.Account == email)
+                    return true;
+            }
+            return false;
+        }
+
+        public async Task<User> ForgotPassword(string email, string code)
+        {
+            User user = GetByUserAccount(email);
+
+            if (user.ForgotPassowrd == null || user.ForgotPassowrd == "")
+                return null;
+            if (user.Account == email && code == user.ForgotPassowrd)
+                return user;
+            return null;
+        }
+
+
+
+        public async Task<string> ChangePassword(string email, string code, string password)
+        {
+            User us = GetByUserAccount(email);
+
+            if(us.Account == email && us.ForgotPassowrd == code)
+            {
+                us.ForgotPassowrd = "";
+                us.Password = password;
+
+                await UpdateAsync(us);
+
+                return "success";
+            }
+            return "error";
+            
 
         }
     }
