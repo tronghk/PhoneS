@@ -1,1 +1,11 @@
-# CSharp-MVC
+# Cách cài đặt :
+-Clone project về máy
+- import file scritp sql vào ms sql
+- chạy chương trình:
+- quyền admin :
+- tk : admin
+- mk: 123123
+- quyền user:
+- tk: trongnguyen.02.stu@gmail.com
+- mk :222222
+- Chức năng chính : Đăng nhập, đăng ký, quên mật khẩu, mua hàng, tìm kiếm sản phẩm, thanh toán, quản lý sản phẩm, thống kê doanh số,...              
