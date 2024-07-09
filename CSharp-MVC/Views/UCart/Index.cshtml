@@ -51,7 +51,7 @@
                                                     <!-- Hình Ảnh Sản phẩm -->
                                                     <td class="product-thumbnail">
                                                         <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@p.ProductID">
-                                                            <img src="~/Image/home/products/@p.Picture" alt="">
+                                                            <img src="~/StaticFile/Images/@p.Picture" alt="">
                                                         </a>
                                                     </td>
                                                     <!-- Tên Sản phẩm -->
@@ -126,4 +126,15 @@
         </div>
     </div>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+    const btn_login = document.querySelector(".block-userlink");
+
+    if (cu.Account != null) {
+        btn_login.style.visibility = "hidden";
+    } else {
+        btn_login.style.visibility = "visible";
+    }
+</script>
 <!-- cart-area-end -->

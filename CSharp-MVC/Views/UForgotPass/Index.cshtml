@@ -87,6 +87,7 @@
                     //biến trong form
                     var inputField = $('#email').val();
                     messagefail.style.visibility = "hidden";
+                   
                     $.ajax({
                         url: '/UForgotPass/GetCode',
                         type: 'POST',

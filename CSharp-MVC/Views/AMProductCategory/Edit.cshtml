@@ -218,7 +218,7 @@
        
        
     </div>
-    <form class="form-add align-content-center justify-content-center " method="post" asp-controller="AMProductCategory" asp-action="EditCategory" style="display: flex;">
+    <form enctype="multipart/form-data" class="form-add align-content-center justify-content-center " method="post" asp-controller="AMProductCategory" asp-action="EditCategory" style="display: flex;">
         <div class="form-group add-form">
            <a asp-controller="AMProductCategory" asp-action="Index" asp-route-id="0">
                 <i class="out bi bi-x-circle-fill"></i>
@@ -232,10 +232,15 @@
           
             <div class="optionAdd">
                 <div class="d-block">
+                    <div class="image-add" style="position: relative;">
+                        <img class="update-image" src="" alt="Image preview...">
+                        <input onchange="readUrl(this)" class="text-center" src="/StaticFile/Images/@(@cu.nameImage)"
+                        style="position: absolute; bottom: -30px; border: none;left:24%;width:95px"
+                        asp-for="linkImage" required="required" type="file">
+                    </div>
                     <br><br>
-                    Lựa chọn: <br>
 
-    
+                    Lựa chọn: <br>
                     <button  asp-controller="AMProductCategory" asp-action="EditCategory"  class="btn btn-primary btn-round ml-auto text-center " style="width: 90px; height: 40px; margin-top: 15px;">
                         <i class="bi bi-plus"></i>
                         Sửa

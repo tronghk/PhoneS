@@ -14,7 +14,7 @@ namespace Service.implementation
            switch (result)
             {
                 case "success": {
-                        message = "Thành công"; break; 
+                        message = " thành công"; break; 
                 }
                 case "error":
                     {

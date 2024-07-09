@@ -35,11 +35,12 @@
     <link rel="stylesheet" href="~/Nassets/css/default.css">
     <link rel="stylesheet" href="~/Nassets/css/style.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CSharp_MVC.styles.css" asp-append-version="true" />
 </head>
 <body>
     <!-- header-start -->
-    <header class="header" style="background-color: #3498db; color:#000">
+    <header class="header" style="background-color: #3498db; color:#000; width: 100%;
+    z-index: 3;
+    position: fixed;">
         <div class="header-top">
             <div class="container custom-conatiner">
                 <div class="header-inner">
@@ -47,7 +48,7 @@
                         <div class="col-xl-6 col-lg-7">
                             <div class="header-inner-start">
                                 <div class="support d-none d-sm-block">
-                                    <p>Need Help?123 456 789</p>
+                                    <p>Need Help 0522383658</p>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +74,7 @@
                     <div class="row align-items-center">
                         <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4">
                             <div class="header__infoo">
-                                <a asp-area="" asp-controller="UHome" asp-action="Index">NIENHOEP</a>
+                                <a asp-area="" asp-controller="UHome" asp-action="Index">PHONENH</a>
                             </div>
                         </div>
                         <div class="col-xl-5 col-lg-4 d-none d-lg-block">
@@ -102,8 +103,9 @@
                         <div class="col-xl-4 col-lg-5 col-md-8 col-sm-8">
                             <div class="header-action">
                                 <!-- Account Start -->
-                                <div class="block-userlink">
-                                    <a class="icon-link icon-link-2" asp-area="" asp-controller="USignin" asp-action="Index">
+                               
+                                <div style="visibility:hidden" class="block-userlink">
+                                    <a class="icon-link icon-link-2 "  asp-area="" asp-controller="USignin" asp-action="Index">
                                         <i class="flaticon-user"></i>
                                         <span class="text">
                                             <span class="sub">Login </span>
@@ -176,7 +178,7 @@
                                                                             <div class="cart__inner d-flex">
                                                                                 <div class="cart__thumb">
                                                                                     <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@p.ProductID">
-                                                                                        <img src="~/Image/home/products/@p.Picture" alt="...">
+                                                                                        <img src="~/StaticFile/Images/@p.Picture" alt="...">
                                                                                     </a>
                                                                                 </div>
                                                                                 <div class="cart__details">
@@ -686,5 +688,4 @@
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
 }

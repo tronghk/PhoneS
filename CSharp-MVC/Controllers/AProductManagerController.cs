@@ -13,14 +13,17 @@ namespace CSharp_MVC.Controllers
         private readonly IProductInfoService _productInfoService;
         private readonly IUnityService _unityService;
         private readonly ILogger<AProductManagerController> _logger;
+        private IWebHostEnvironment _environment;
+
         public AProductManagerController(ILogger<AProductManagerController> logger, IProductService productService,
-            IProductCategoryService productCategoryService, IProductInfoService productInfoService, IUnityService unityService)
+            IProductCategoryService productCategoryService, IProductInfoService productInfoService, IUnityService unityService, IWebHostEnvironment environment)
         {
             _productService = productService;
             _productCategoryService = productCategoryService;
             _logger = logger;
             _productInfoService = productInfoService;
             _unityService = unityService;
+            _environment = environment;
         }
         public IActionResult Index(string result,string message)
         {
@@ -130,6 +133,29 @@ namespace CSharp_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromForm] ProductAll request)
         {
+            IFormFile file = request.Picture;
+
+
+            var fileName = file.FileName;
+            DateTime dt = DateTime.Now; // Or whatever
+            string s = dt.ToString("yyyyMMddHHmmss");
+            string newName = "IMG-" + s + fileName.Substring(fileName.Length - 4);
+            if (fileName.Length > 0)
+            {
+
+                string path = Path.Combine(_environment.ContentRootPath, "StaticFile", "Images", newName);
+
+                using (var st = System.IO.File.Create(path))
+                {
+                    await file.CopyToAsync(st);
+                }
+
+
+            }
+
+
+
+
             string result = "empty";
             string message = "";
             int idCategory = _productCategoryService.GetByProductCategoryName(Request.Form["Category"].ToString()).ProdCateID;
@@ -140,7 +166,7 @@ namespace CSharp_MVC.Controllers
                 {
                     ProductName = request.ProductName,
                     Description = cate,
-                    Picture = request.Picture,
+                    Picture = newName,
                     Price = request.Price,
                     Quantity = request.Quantity,
                     ProdCateID = idCategory
@@ -183,7 +209,7 @@ namespace CSharp_MVC.Controllers
             {
                 ProductID = product.ProductID,
                 ProductName = product.ProductName,
-                Picture = product.Picture,
+                nameFile = product.Picture,
                 Price = product.Price,
                 Quantity = product.Quantity,
                 Description = product.Description,
@@ -215,9 +241,33 @@ namespace CSharp_MVC.Controllers
             string message = "";
             int idCategory = _productCategoryService.GetByProductCategoryName(Request.Form["Category"].ToString()).ProdCateID;
             string cate = Request.Form["Description"].ToString();
-            var src = request.Picture;
-            if (src == null)
-                src = Request.Form["Picture"].ToString();
+
+            IFormFile file = request.Picture;
+
+
+            var fileName = file.FileName;
+            DateTime dt = DateTime.Now; // Or whatever
+            string s = dt.ToString("yyyyMMddHHmmss");
+            string newName = "IMG-" + s + fileName.Substring(fileName.Length - 4);
+            if (fileName.Length > 0)
+            {
+
+                string path = Path.Combine(_environment.ContentRootPath, "StaticFile", "Images", newName);
+
+                using (var st = System.IO.File.Create(path))
+                {
+                    await file.CopyToAsync(st);
+                }
+
+
+            }
+
+            if (file == null) {
+
+                var pr =  _productService.GetByProductId(request.ProductID);
+                newName = pr.Picture;
+            }
+
             if (!ModelState.IsValid)
             {
                 var product = new Product
@@ -225,7 +275,7 @@ namespace CSharp_MVC.Controllers
                     ProductID = request.ProductID,
                     ProductName = request.ProductName,
                     Description = cate,
-                    Picture = src,
+                    Picture = newName,
                     Price = request.Price,
                     Quantity = request.Quantity,
                     ProdCateID = idCategory

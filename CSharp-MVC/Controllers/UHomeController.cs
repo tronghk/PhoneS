@@ -42,7 +42,9 @@ namespace CSharp_MVC.Controllers
             var categories = _productCategoryService.GetAll().Select(entity => new ProductCategoryVm
             {
                 ProdCateID = entity.ProdCateID,
-                ProdCateName = entity.ProdCateName
+                ProdCateName = entity.ProdCateName,
+                nameImage = entity.linkImage
+
             }).ToList();
 
             var productVm = products.Join(
@@ -75,6 +77,27 @@ namespace CSharp_MVC.Controllers
             uHomeVm.Products = productVm;
             uHomeVm.Categories = categories;
             uHomeVm.Cart = cart;
+           
+
+
+            // load 5 sản phẩm mới nhất
+
+
+            // danh sách sản phẩm nổi bật ( duoc mua nhiều nhất)
+
+            var listSortFour = new List<ProductVm>();
+            int i = 0;
+            foreach(ProductVm value in productVm)
+            {
+                listSortFour.Add(value);
+                i++;
+                if(i == 4)
+                {
+                    break;
+                }
+            }
+            uHomeVm.ListPView = listSortFour;
+          
 
             return View(uHomeVm);
         }

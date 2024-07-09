@@ -65,6 +65,18 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
+var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFile");
+if (!Directory.Exists(staticFilesPath))
+{
+    Directory.CreateDirectory(staticFilesPath);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(staticFilesPath),
+    RequestPath = "/StaticFile"
+});
+
 app.UseRouting();
 app.UseAuthorization();
 app.UseSession();
