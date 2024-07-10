@@ -14,6 +14,7 @@ namespace Service
         Task DeleteAsync(Customer customer);
 
         Task<string> UpdateAsync(Customer customer);
+        Customer GetByCustomerUserId(string userId);
         Task<string> DeleteById(int id);
 
         IEnumerable<Customer> GetAll();

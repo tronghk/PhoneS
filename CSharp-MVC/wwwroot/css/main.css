@@ -12,7 +12,9 @@ a {
     color: #ccc;
     font-size: 14px;
 }
-
+.input-group .input-group-prepend{
+    display: grid;
+}
 .list-group nav-menu-list {
     margin-left: 11px;
     width: 100%;

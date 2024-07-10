@@ -1,0 +1,140 @@
+﻿
+@model CSharp_MVC.Models.CodeModel
+@{
+    string test = "abc";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+    
+</head>
+@if (ViewBag.SuccessMsg != null)
+{
+    <div id="msgAlert" class="alert alert-success" role="alert">
+        @ViewBag.SuccessMsg
+    </div>
+}
+<body>
+
+    <style>
+        .nice-select {
+            width: 100%;
+        }
+
+        .list {
+            width: 100%;
+        }
+
+        #countdown {
+            font-size: 15px;
+            text-decoration: underline;
+            text-align: end;
+            margin-top:1%;
+            display: none;
+        }
+    </style>
+    <div class="sign-up-background pt-4 pb-4">
+        <div class="sign-up-wrapper">
+            <div class="sign-up-info mx-auto col-10 col-md-8 col-lg-6">
+
+                <form asp-controller="UForgotPass" asp-action="Forgot" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="justify-content-end">
+
+                        <label asp-for="email" class="form-label">Email</label>
+                      
+
+                            <input asp-for="email" type="email" class="form-control" name="email" id="email" />
+
+
+                        <input asp-for="code" required style="width:79%; margin-top: 10px; display:inline" class="form-control" type="text" />
+
+                            <button style="width:20%" class="btn btn-outline-primary" type="button" id="submitButton">Nhận code</button>
+                                <div style="width:100%" id="countdown">60</div>
+
+                        <div id="messagefail" class="form-control" style="border:none;visibility:hidden;text-align:center; color:red">Tài khoảnkhông hợp lệ</div>
+                        @if (ViewBag.message != null)
+                        {
+                            <div id="messagefail" class="form-control" style="border:none;visibility:hidden;text-align:center; color:red">Tài khoản hoặc code không hợp lệ</div>
+                        }
+
+                    </div>
+                    <div class="" style="width:100%; display:flex; justify-content:center">
+                        <button  type="submit" style="width:20%" class="btn btn-outline-primary">Xác nhận</button>
+                    </div>
+                </form>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+@section Scripts {
+    <script>
+        const messagefail = document.getElementById("messagefail");
+        const submitbtn = document.getElementById("submitButton");
+        let timeLeft = 60;
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+      
+        $(document).ready(function () {
+            $('#submitButton').click(function () {
+
+                if (timeLeft == 60) {
+                    //biến trong form
+                    var inputField = $('#email').val();
+                    messagefail.style.visibility = "hidden";
+                   
+                    $.ajax({
+                        url: '/UForgotPass/GetCode',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        // dữ liệu đẩy xuống
+                        data: JSON.stringify({ email: inputField }),
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (response) {
+                            if (response.message == "error")
+                                messagefail.style.visibility = "visible";
+                            else {
+                                timeLeft = 60;
+                                submitbtn.style.disabled = true;
+
+                                const countdownElement = document.getElementById('countdown');
+                                countdownElement.textContent = "Gửi lại sau " + timeLeft + "s";
+                                countdownElement.style.display = "block";
+                                const countdownTimer = setInterval(() => {
+                                    countdownElement.textContent = timeLeft;
+                                    timeLeft--;
+                                    countdownElement.textContent = "Gửi lại sau " + timeLeft + "s";
+                                    if (timeLeft < 0) {
+                                        timeLeft = 60;
+                                        submitbtn.style.disabled = false;
+                                        clearInterval(countdownTimer);
+                                        countdownElement.textContent = "Gửi lại lần nữa";
+                                    }
+                                }, 1000);
+                            }
+
+                        },
+                        error: function (error) {
+                            console.log("error");
+                        }
+
+
+                    });
+                }
+               
+               
+
+            });
+        });
+
+        
+
+    </script>
+}

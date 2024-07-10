@@ -71,7 +71,7 @@
         
                                 </li>
                                 <li class="list-group-item menu-item rounded-pill ">
-                                   <a asp-controller="AProductManage" asp-action="Index" class="menu-icon-sub rounded-pill">
+                                    <a asp-controller="AProductManage" asp-action="Index" asp-route-id="0" class="menu-icon-sub rounded-pill">
                                             <span class="icon-title sub-list">Sản phẩm</span>
                                         </a>
         
@@ -217,5 +217,11 @@
                 @RenderBody();
             </div>
     <script src="~/js/main.js"></script>
+    <script>
+        var logout = document.querySelector(".log-out");
+        logout.onclick = function () {
+            window.location.href = '/USignin/Index';
+        }
+    </script>
     
 </body>

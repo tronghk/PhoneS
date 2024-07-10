@@ -53,6 +53,7 @@ namespace CSharp_MVC.Controllers
                 FullName = user.FullName,
                 Nationality = user.Nationality,
                 Phone = user.Phone,
+                
                 Address= user.Address,
                 Email = user.Account
             };
@@ -62,7 +63,7 @@ namespace CSharp_MVC.Controllers
                 ModelState.AddModelError("", "Account already existed !");
                 return View();
             }
-            TempData["signup"] = "success";
+            TempData["signup"] = "Đăng ký thành công";
             return RedirectToAction("Index", "USignin");
 
         }

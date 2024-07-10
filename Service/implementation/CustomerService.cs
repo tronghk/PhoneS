@@ -55,6 +55,11 @@ namespace Service.implementation
         {
             return _context.Customer.Where(x => x.CustomerID == customerID).FirstOrDefault();
         }
+        public Customer GetByCustomerUserId(string userId)
+        {
+            return _context.Customer.Where(x => x.Account == userId).FirstOrDefault()!;
+        }
+
 
         public IEnumerable<Customer> search(string name)
         {
@@ -94,7 +99,6 @@ namespace Service.implementation
                 return "error_update";
             }
             return "success";
-            
         }
     }
 }

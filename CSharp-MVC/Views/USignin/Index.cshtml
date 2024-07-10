@@ -24,13 +24,13 @@
 
             <form class="form-control" style="width:100%; margin-left:0px;" required asp-controller="USignin" asp-action="Login" method="post">
                 <!-- Tài khoản -->  
-                <input type="text" placeholder="Enter Username" asp-for="Account" required>
+                <input style="color:#000" type="text" placeholder="Enter Username" asp-for="Account" required> 
                 <span asp-validation-for="Account" class="text-danger"></span>
                 <!-- Mật khẩu-->
-                <input minlength="6" type="password" placeholder="Enter Password" asp-for="Password" required>
+                <input style="color:#000" minlength="6" type="password" placeholder="Enter Password" asp-for="Password" required>
                 <span asp-validation-for="Password" class="text-danger"></span>
                 <!-- Quên mật khẩu-->
-                <div class="forgetpw-notify">Forget your password? <a href="">Click here!</a></div>
+                <div class="forgetpw-notify">Forget your password? <a asp-controller="UForgotPass" asp-action="Index" >Click here!</a></div>
                 <!-- Button đăng nhập-->
                 <button style="border-radius: 4px;color: #fff;" type="submit">Login</button>
             </form>
@@ -38,7 +38,7 @@
 
         <!-- Welcome + signup panel -->
         <div class="panel signup-panel">
-            <h2 class="glitter"> Welcome to ShoeNH!</h2>
+            <h2 class="glitter"> Welcome to PhoneNH!</h2>
             <div class="signup-notify">First time here? Signup for a brand new account right now!</div>
             <form asp-action="SignUp" asp-controller="USignup" method="post">
 
@@ -47,6 +47,7 @@
             <!-- Button đăng kí -->
             
             <div class="info"><a href="">Privacy Policy</a><a href="">Terms & Conditions</a></div>
+            <div style="cursor: pointer ; color:orangered" class="info getHome">Tiến đến trang chủ -></div>
         </div>
 
     </div>
@@ -70,7 +71,16 @@
         $("#msgAlert").fadeOut('slow');
     }, 2000);
 
+    document.addEventListener('click', function (event) {
+        var isClickInsideElement = document.querySelector(".getHome").contains(event.target);
+
+        if (isClickInsideElement) {
+            window.location.href = '/UHome/Index';
+        }
+    });
 </script>
 @section Scripts {
     <script src="~/js/login.js" asp-append-version="true"></script>
+
+
 }

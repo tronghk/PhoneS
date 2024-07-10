@@ -73,11 +73,15 @@ namespace CSharp_MVC.Controllers
                 CoefSalary = entity.CoefSalary,
                 Salary = entity.Salary,
             }).ToList();
-            int max = listEmployee[0].EmployeeID;
-            foreach (var item in listEmployee)
+            int max = 0;
+            if (listEmployee.Count > 0)
             {
-                if (max < item.EmployeeID)
-                    max = item.EmployeeID;
+                max = listEmployee[0].EmployeeID;
+                foreach (var item in listEmployee)
+                {
+                    if (max < item.EmployeeID)
+                        max = item.EmployeeID;
+                }
             }
             ViewData["id"] = max + 1;
             return View();

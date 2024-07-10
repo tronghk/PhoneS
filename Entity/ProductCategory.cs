@@ -15,6 +15,7 @@ namespace Entity
         public int ProdCateID { get; set; }
 
         public string ProdCateName { get; set; }
+        public string linkImage { get; set; }
 
         public ICollection<Product> Product { get;}
     }

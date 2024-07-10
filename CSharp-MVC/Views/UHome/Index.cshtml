@@ -16,6 +16,10 @@
     {
         customer = JsonConvert.DeserializeObject<UserVm>(session);
     }
+    List<ProductVm> listP = Model.Products as List<ProductVm>;
+
+    List<ProductVm> listPNew = Model.ListPView as List<ProductVm>;
+
 }
 
 @model UHomeVm;
@@ -24,76 +28,93 @@
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-
-<section class="main-products d-flex justify-content-center">
-    <div class="container-fluid">
-        <div class="row justify-content-evenly">
-            <!-- Sản phẩm chính số 1-->
+<section  class="main-products d-flex justify-content-center">
+    <div style="margin-top: 192px" class="container-fluid">
+        @if(listP.Count > 0)
+        {
             <div class="mainA col-6">
                 <!-- Link ảnh sản phẩm chính số 1-->
                 <img src="~/Image/home/main-products/1.jpg" class="img-fluid" alt="">
                 <div class="info-main1 position-absolute start-1">
                     <h6>SUPERCHARGED FOR PROS.</h6>
-                    <h1>iPhone X</h1>
-                    <p>From $999.00 or $41.62/mo.<br>for 24 mo. Footnote*</p>
+                    <h1>@listP[listP.Count-1].ProductName</h1>
+                    <p>Price from @listP[listP.Count - 1].Price<br>for 24 mo. Footnote*</p>
                     <!-- Button dẫn tới sản phẩm chính số 1 (IPHONE X) -->
                     <button class="btn">BUY NOW</button>
                 </div>
             </div>
+        }
+        
+        <div class="row justify-content-evenly">
+            <!-- Sản phẩm chính số 1-->
+         
             <div class="mainB col-3">
                 <div class="row g-4">
-                    <!-- Sản phẩm chính số 2-->
-                    <a href="LINK THỂ LOẠI APPLE">
-                        <div class="mini col-12">
-                            <!-- Link ảnh sản phẩm chính số 2-->
-                            <img src="~/Image/home/main-products/2-iphones.jpg" class="img-fluid" alt="">
-                            <div class="info-main2 position-absolute start-1">
-                                <h6>FREE ENGRAVING</h6>
-                                <h4>iPhones</h4>
-                                <p>High-fidelity playback<br>& ultra-low distortion</p>
+                    @if (listP.Count > 1)
+                    {
+                        <!-- Sản phẩm chính số 2-->
+                        <a href="LINK THỂ LOẠI APPLE">
+                            <div class="mini col-12">
+                                <!-- Link ảnh sản phẩm chính số 2-->
+                                <img src="~/Image/home/main-products/2-iphones.jpg" class="img-fluid" alt="">
+                                <div class="info-main2 position-absolute start-1">
+                                    <h6>FREE ENGRAVING</h6>
+                                    <h4>@listP[listP.Count - 2].ProductName</h4>
+                                    <p>High-fidelity playback<br>& ultra-low distortion</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                    <!-- Sản phẩm chính số 3-->
-                    <a href="LINK THỂ LOẠI SÁMSUNG">
-                        <div class="mini col-12">
-                            <!-- Link ảnh sản phẩm chính số 3-->
-                            <img src="~/Image/home/main-products/3-samsung.jpg" class="img-fluid" alt="">
-                            <div class="info-main2 position-absolute start-1">
-                                <h6>BEST SALE</h6>
-                                <h4>Samsung Galaxy</h4>
-                                <p>From $1699.00<br>or $64.62/mo.</p>
+                        </a>
+                    }
+                   
+                    @if(listP.Count > 2)
+                    {
+                        <!-- Sản phẩm chính số 3-->
+                        <a href="LINK THỂ LOẠI SÁMSUNG">
+                            <div class="mini col-12">
+                                <!-- Link ảnh sản phẩm chính số 3-->
+                                <img src="~/Image/home/main-products/3-samsung.jpg" class="img-fluid" alt="">
+                                <div class="info-main2 position-absolute start-1">
+                                    <h6>BEST SALE</h6>
+                                    <h4>Samsung Galaxy</h4>
+                                    <p>From $1699.00<br>or $64.62/mo.</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    }
                 </div>
             </div>
             <div class="mainB col-3">
                 <div class="row g-4">
-                    <!-- Sản phẩm chính số 4-->
-                    <a href="LINK THỂ LOẠI XIAOMI">
-                        <div class="mini col-12">
-                            <!-- Link ảnh sản phẩm chính số 4-->
-                            <img src="~/Image/home/main-products/4-xiaomi.jpg" class="img-fluid" alt="">
-                            <div class="info-main2 position-absolute start-1">
-                                <h6>15% OFF</h6>
-                                <h4>Xiaomi</h4>
-                                <p>Shop the latest band styles<br>and colors.</p>
+                    @if(listP.Count > 3)
+                    {
+                        <!-- Sản phẩm chính số 4-->
+                        <a href="LINK THỂ LOẠI XIAOMI">
+                            <div class="mini col-12">
+                                <!-- Link ảnh sản phẩm chính số 4-->
+                                <img src="~/Image/home/main-products/4-xiaomi.jpg" class="img-fluid" alt="">
+                                <div class="info-main2 position-absolute start-1">
+                                    <h6>15% OFF</h6>
+                                    <h4>@listP[listP.Count - 3].ProductName</h4>
+                                    <p>Shop the latest band styles<br>and colors.</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                    <!-- Sản phẩm chính số 5-->
-                    <a href="LINK THỂ LOẠI HUAWEI">
-                        <div class="mini col-12">
-                            <!-- Link ảnh sản phẩm chính số 5-->
-                            <img src="~/Image/home/main-products/5-huawei.jpg" class="img-fluid" alt="">
-                            <div class="info-main2 position-absolute start-1">
-                                <h6>NEW ARRIVAL</h6>
-                                <h4>Huawei</h4>
-                                <p>From $599 or $49/mo.<br>for 12 mo. *</p>
+                        </a>
+                    }
+                    @if(listP.Count > 4)
+                    {
+                        <!-- Sản phẩm chính số 5-->
+                        <a href="LINK THỂ LOẠI HUAWEI">
+                            <div class="mini col-12">
+                                <!-- Link ảnh sản phẩm chính số 5-->
+                                <img src="~/Image/home/main-products/5-huawei.jpg" class="img-fluid" alt="">
+                                <div class="info-main2 position-absolute start-1">
+                                    <h6>NEW ARRIVAL</h6>
+                                    <h4>@listP[listP.Count - 4].ProductName</h4>
+                                    <p>From $599 or $49/mo.<br>for 12 mo. *</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    }
                 </div>
             </div>
         </div>
@@ -167,7 +188,7 @@
 <section class="categories ">
     <div class="row">
         <div class="col-12">
-            <div class="cate owl-carousel owl-theme">
+            <div style="display: flex" class="cate owl-carousel owl-theme">
                 @foreach (var obj in Model.Categories)
                 {
                     <a href="@Url.Action("Index", "UProducts", new { categoryId = obj.ProdCateID })">
@@ -191,10 +212,11 @@
                                     </div>
                                     <div class="col-5">
                                         @{
-                                            String imgsource = obj.ProdCateName + ".png";
+
+                                            String imgsource = obj.nameImage;
                                         }
 
-                                        <img src="~/Image/home/categories/@imgsource" class="img card-img " alt="...">
+                                        <img src="/StaticFile/Images/@imgsource" class="img card-img " alt="...">
                                     </div>
                                 </div>
                             </div>
@@ -208,66 +230,30 @@
 
 <!-- Sản phẩm mới nổi bật HARDCODE-->
 <section class="new-product">
+    <h2>Sản phẩm Bán chạy</h2>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="new owl-carousel owl-theme">
+                <div style="display:flex" class="new owl-carousel owl-theme">
                     <!-- Sản phẩm số 1-->
-                    <a href="LINK SẢN PHẨM SỐ 1">
-                        <div class="item">
-                            <div class="card text-bg-dark">
-                                <!-- Link ảnh sản phẩm mới số 1-->
-                                <img src="~/Image/home/subbanner-01.webp" class="card-img" alt="...">
-                                <div class="info-new-product card-img-overlay" style="color:white">
-                                    <div class="type">BIG SCREEN</div>
-                                    <div class="name">Smart Watch Series 7</div>
-                                    <div class="price">From 399$</div>
+                    @foreach (ProductVm value in listPNew)
+                    {
+                        <a style="width:24%" href="#">
+                            <div class="item">
+                                <div class="card text-bg-dark">
+                                    <!-- Link ảnh sản phẩm mới số 1-->
+                                    <img src="~/StaticFile/Images/@value.Picture" class="card-img" alt="...">
+                                    <div class="info-new-product card-img-overlay" style="color:white">
+                                        <div class="type">@value.ProdCateName</div>
+                                        <div class="name">@value.ProductName</div>
+                                        <div class="price">From @value.Price$</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                    <!-- Sản phẩm số 2-->
-                    <a href="LINK SẢN PHẨM SỐ 1">
-                        <div class="item">
-                            <div class="card text-bg-dark">
-                                <!-- Link ảnh sản phẩm mới số 2-->
-                                <img src="~/Image/home/subbanner-02.webp" class="card-img" alt="...">
-                                <div class="info-new-product card-img-overlay">
-                                    <div class="type">BIG SCREEN</div>
-                                    <div class="name">Smart Watch Series 7</div>
-                                    <div class="price">From 399$</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <!-- Sản phẩm số 3-->
-                    <a href="LINK SẢN PHẨM SỐ 1">
-                        <div class="item">
-                            <div class="card text-bg-dark">
-                                <!-- Link ảnh sản phẩm mới số 3-->
-                                <img src="~/Image/home/subbanner-03.webp" class="card-img" alt="...">
-                                <div class="info-new-product card-img-overlay">
-                                    <div class="type">BIG SCREEN</div>
-                                    <div class="name">Smart Watch Series 7</div>
-                                    <div class="price">From 399$</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <!-- Sản phẩm số 4-->
-                    <a href="LINK SẢN PHẨM SỐ 1">
-                        <div class="item">
-                            <div class="card text-bg-dark">
-                                <!-- Link ảnh sản phẩm mới số 4-->
-                                <img src="~/Image/home/subbanner-04.webp" class="card-img" alt="...">
-                                <div class="info-new-product card-img-overlay">
-                                    <div class="type">BIG SCREEN</div>
-                                    <div class="name">Smart Watch Series 7</div>
-                                    <div class="price">From 39$</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    }
+                   
+                   
                 </div>
             </div>
         </div>
@@ -288,14 +274,14 @@
     <!-- Danh mục các sản phẩm đặc biệt-->
     <div class="row">
         <div class="col-12">
-            <div class="sprod owl-carousel owl-theme">
+            <div style="display:flex" class="sprod owl-carousel owl-theme">
                 @{
                     var modelList = Model.Products.ToList();
                 }
 
                 @for (int i = 0; i < modelList.Count; i += 2)
                 {
-                    <div class="item">
+                    <div style="width:24%" class="item">
                         <a href="">
                             <!-- Sản phẩm hàng 1-->
                             <div class="card">
@@ -303,7 +289,7 @@
                                     <div class="col-6 d-flex align-items-center">
                                         <!-- Link ảnh sản phẩm đặc biệt-->
                                         <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@modelList[i].ProductID">
-                                            <img src="~/Image/home/products/@modelList[i].Picture" class="card-img-top" alt="...">
+                                            <img src="~/StaticFile/Images/@modelList[i].Picture" class="card-img-top" alt="...">
                                         </a>
                                     </div>
                                     <div class="col-6">
@@ -347,14 +333,14 @@
                         </a>
 
 
-                        <a href="">
+                       @*  <a href="">
                             <!-- Sản phẩm hàng 2-->
                             <div class="card">
                                 <div class="row g-0">
                                     <div class="col-6 d-flex align-items-center">
                                         <!-- Link ảnh sản phẩm đặc biệt-->
                                         <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@modelList[i+1].ProductID">
-                                            <img src="~/Image/home/products/@modelList[i + 1].Picture" class="card-img-top" alt="...">
+                                            <img src="~/StaticFile/Images/@modelList[i + 1].Picture" class="card-img-top" alt="...">
                                         </a>
                                     </div>
 
@@ -385,7 +371,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </a> *@
                     </div>
                 }
 
@@ -442,7 +428,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <div class="new owl-carousel owl-theme">
+            <div style="display:flex" class="new owl-carousel owl-theme">
                 <!-- Blog số 1-->
                 <div class="item">
                     <div class="card">
@@ -517,6 +503,19 @@
 </section>
 
 @section Scripts {
+         
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
     <script src="~/js/home.js" asp-append-version="true"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+        const btn_login = document.querySelector(".block-userlink");
+       
+        if (cu.Account != null) {
+            btn_login.style.visibility = "hidden";
+        } else {
+            btn_login.style.visibility = "visible";
+        }
+    </script>
 }

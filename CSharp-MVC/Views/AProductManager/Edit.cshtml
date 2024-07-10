@@ -232,7 +232,7 @@
        
        
     </div>
-       <form class="form-add align-content-center justify-content-center " method="post" asp-controller="AProductManager" asp-action="EditProduct">
+    <form enctype="multipart/form-data" class="form-add align-content-center justify-content-center " method="post" asp-controller="AProductManager" asp-action="EditProduct">
             <div class="form-group add-form" >
             <a asp-controller="AProductManager" asp-action="Index"><i class="out bi bi-x-circle-fill"></i></a>
             <h1 class="card-title text-center m-lg-3 mt-0" >
@@ -301,9 +301,10 @@
                     </button>
                 </div>
                 <div class="image-add" style="position: relative;">
-                    <img style="width:150px;height:150px" class="update-image" src="/Image/home/products/@(@product.Picture)" alt="Image preview...">
-                    <input onchange="readUrl(this)" class="text-center" style="position: absolute; bottom: -30px; border: none;left:24%;width:82px" id="Picture" value="@product.Picture" asp-for="Picture"  type="file"> 
+                    <img style="width:150px;height:150px" class="update-image" src="/StaticFile/Images/@(@product.nameFile)" alt="Image preview...">
+                    <input onchange="readUrl(this)" class="text-center" style="position: absolute; bottom: -30px; border: none;left:24%;width:95px" id="Picture" value="@product.Picture" asp-for="Picture"  type="file"> 
                 </div>
+
                
                 
             </div>
