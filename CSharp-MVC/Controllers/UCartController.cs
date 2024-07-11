@@ -4,6 +4,7 @@ using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service;
+using Service.implementation;
 
 namespace CSharp_MVC.Controllers
 {
@@ -62,6 +63,24 @@ namespace CSharp_MVC.Controllers
             _cartService.AddToCart(usid, proid);
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        public async Task<JsonResult> AddProduct([FromBody] AddProductModel model)
+        {
 
+            var result = await _cartService.AddProduct(model.UserId, model.ProductId, model.Quantity);
+            var response = new { message = result };
+            return Json(response);
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RemoveProduct([FromBody] AddProductModel model)
+        {
+
+            var result = await _cartService.AddProduct(model.UserId, model.ProductId, model.Quantity);
+            var response = new { message = result };
+            return Json(response);
+
+        }
     }
 }

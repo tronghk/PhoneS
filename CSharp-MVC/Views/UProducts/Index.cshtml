@@ -87,7 +87,7 @@
         <div class="shop-area mb-20">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-3 col-lg-4">
+                    <div style="margin-top:192px" class="col-xl-3 col-lg-4">
                         <!--Category goes here-->
                         <div class="product-widget mb-30">
                             <h5 class="pt-title">Product categories</h5>
@@ -325,7 +325,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-9 col-lg-8">
+                    <div style="margin-top:192px" class="col-xl-9 col-lg-8">
                         <!--Shop banner, just put whatever, dont render this-->
                         <div class="shop-banner mb-30">
                             <div class="banner-image">
@@ -585,6 +585,11 @@
                     console.error('AJAX Error:', textStatus, errorThrown);
                 }
             });
+        }
+        if (cu.Account != null) {
+            btn_login.style.visibility = "hidden";
+        } else {
+            btn_login.style.visibility = "visible";
         }
     </script>
 </body>

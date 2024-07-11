@@ -34,7 +34,7 @@
 <link href="~/css/payment.css" rel="stylesheet" />
 <div class="page-wrapper container">
     <div class="payment-wrapper container row gx-2 justify-content-between d-md-flex">
-        <div class="first-content col-md-12 col-lg-6 pt-3">
+        <div style="margin-top:192px" class="first-content col-md-12 col-lg-6 pt-3">
             <!--Payment Infomation Wrapper-->
             <div class="payment-info">
                 <!-- Contact Infomation -->
@@ -45,8 +45,8 @@
                     <div class="contact-mail container">
                         <div class="email row gx-4">
                             <p id="full-name-display" class="full-name col-lg-9">
-                                Phan Thái Hòa
-                                <a id="email-display" class="email">(thaihoaphan123@gmail.com)</a>
+                                Trọng Nguyễn
+                                <a id="email-display" class="email">(trongnguyen.02.stu@gmail.com)</a>
                             </p>
                         </div>
                         <div class="log-out">
@@ -57,7 +57,7 @@
                 <!-- Shipping Infomation -->
                 <div class="shipping-info container row g-3 pt-4">
                     <div class="shipping-title">
-                        <h3>Shipping Address</h3>
+                        <h3>Địa chỉ giao hàng</h3>
                     </div>
                     <!-- Shipping Infomations Wrapper-->
                     <div class="shipping-holder">
@@ -208,15 +208,15 @@
                                     {
                                         if (c.ProductID == p.ProductID)
                                         {
-                                            float total = p.Price * c.Quantity;
-                                            subtotal += @total;
-                                            proids[count] = c.ProductID;
+                                            float abc = p.Price * c.Quantity;
+                                            subtotal += abc;
+                                           
                                             count += 1;
                                         }
                                     }
                                 }
                             }
-                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID, proid = @proids})">
+                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID)">
                                 <button class="confirm-btn btn btn-outline-danger p-lg-3 p-sm-2 w-sm-100">
                                     Create Order
                                 </button>
@@ -227,7 +227,7 @@
                 </div>
             </div>
         </div>
-        <div class="second-content col-md-12 col-lg-6 pt-3 ps-lg-5">
+        <div style="margin-top:192px" class="second-content col-md-12 col-lg-6 pt-3 ps-lg-5">
             <div class="product-payment pt-lg-5 pt-md-3">
                 <!-- Product's holder, this is where a product in cart will be rendered to-->
                 <div class="product-list pb-lg-4 pb-md-3">
@@ -262,9 +262,10 @@
                                         <!-- Product's price -->
                                         <div class="pr-totalprice">
                                             @{
-                                                float total = p.Price * c.Quantity;
+                                                float pro = p.Price * c.Quantity;
+                                                string fpro = (pro).ToString("N");
                                             }
-                                            <p>@total$</p>
+                                            <p>@fpro đ</p>
                                         </div>
                                     </div>
                                 }
@@ -280,7 +281,10 @@
                             <p>Sub Total</p>
                         </div>
                         <div class="sub-money">
-                            <p>@subtotal$</p>
+                            <p>@{
+                                    string total = (subtotal).ToString("N");
+                                }@total đ
+                            </p>
                         </div>
                     </div>
                     <div class="shipping d-flex justify-content-between pb-3">
@@ -303,9 +307,13 @@
                         <div class="total-price d-flex justify-content-between">
                             <div class="currency pe-3 d-flex"><p>NHD</p></div>
                             @{
+                               
+                                    
+                                
                                 subtotal += 5.0f;
+                                string text = (subtotal).ToString("N");
                             }
-                            <div class="sum d-flex"><p>@subtotal$</p></div>
+                            <div class="sum d-flex"><p>@text đ</p></div>
                         </div>
                     </div>
                 </div>
@@ -314,3 +322,13 @@
     </div>
 </div>
 <script src="~/payment.js"></script>
+<script>
+    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+    const btn_login = document.querySelector(".block-userlink");
+
+    if (cu.Account != null) {
+        btn_login.style.visibility = "hidden";
+    } else {
+        btn_login.style.visibility = "visible";
+    }
+</script>

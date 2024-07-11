@@ -60,7 +60,8 @@ namespace CSharp_MVC.Controllers
             return View(uPaymentVm);
         }
 
-        public async Task<IActionResult> CreateOrder(float money, int cusid, int userid)
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder(float money, int cusid)
         {
             var bill = new Entity.Bill();
             bill.DateCreated = DateTime.Now;
@@ -68,7 +69,8 @@ namespace CSharp_MVC.Controllers
             bill.EmployeeID = 4;
             bill.CustomerID = cusid;
             bill.VoucherID = 1;
-            
+
+            var customer = _customerService.GetByCustomerId(cusid);
 
             var cart = _cartService.GetAll().Select(entity => new CartVm
             {
@@ -78,14 +80,14 @@ namespace CSharp_MVC.Controllers
                 ProductID = entity.ProductID
             }).ToList();
 
-            var selectioncart = cart.Where(c => c.UserID ==  userid).ToList();
+            var selectioncart = cart.Where(c => c.UserID == int.Parse(customer.Account)).ToList();
 
             int length = selectioncart.Count;
             int[] IDs = selectioncart.Select(c => c.ProductID).ToArray();
 
            await _paymentService.CreateAsync(bill, length, IDs);
 
-            await  _paymentService.ClearCart(userid);
+            await  _paymentService.ClearCart(int.Parse(customer.Account));
             return RedirectToAction("Index");
         }
     }

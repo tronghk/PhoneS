@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -73,6 +74,35 @@ namespace Service.implementation
                 await _context.Cart.AddAsync(newCartItem);
                 await _context.SaveChangesAsync(true);
             }
+        }
+
+        public async Task<string> AddProduct(string userId, string productId, string quantity)
+        {
+            var cartItem = _context.Cart.FirstOrDefault(c => c.UserID == int.Parse(userId) && c.ProductID == int.Parse(productId));
+            if(cartItem!= null)
+            {
+                cartItem.Quantity = int.Parse(quantity)+1;
+                _context.Cart.Update(cartItem);
+                await _context.SaveChangesAsync(true);
+                return cartItem.Quantity.ToString();
+            }
+            return null;
+            
+        }
+
+        public async Task<string> RemoveProduct(string userId, string productId, string quantity)
+        {
+            var cartItem = _context.Cart.FirstOrDefault(c => c.UserID == int.Parse(userId) && c.ProductID == int.Parse(productId));
+            if (cartItem != null)
+            {
+                if (int.Parse(quantity) == 1)
+                    return null;
+                cartItem.Quantity = int.Parse(quantity) - 1;
+                _context.Cart.Update(cartItem);
+                await _context.SaveChangesAsync(true);
+                return cartItem.Quantity.ToString();
+            }
+            return null;
         }
     }
 }

@@ -41,7 +41,9 @@
 </head>
 <body>
     <!-- header-start -->
-    <header class="header d-dark-bg">
+    <header class="header d-dark-bg" style="background-color: #3498db; color:#000; width: 100%;
+    z-index: 3;
+    position: fixed;">
         <div class="header-top">
             <div class="container custom-conatiner">
                 <div class="header-inner">
@@ -132,20 +134,23 @@
                                         <!-- Giỏ hàng Start -->
                                         float subtotal = 0;
                                         int count = 0;
-                                        @foreach(var c in Model.Cart)
+                                        if(Model.Cart!= null)
                                         {
-                                            if(c.UserID == customer.UserID)
+                                            @foreach (var c in Model.Cart)
                                             {
-                                                count += 1;
-                                                foreach(var p in Model.Products)
+                                                if (c.UserID == customer.UserID)
                                                 {
-                                                    if(p.ProductID == c.ProductID)
+                                                    count += 1;
+                                                    foreach (var p in Model.Products)
                                                     {
-                                                        subtotal += p.Price;
+                                                        if (p.ProductID == c.ProductID)
+                                                        {
+                                                            subtotal += p.Price;
+                                                        }
                                                     }
                                                 }
+
                                             }
-                                            
                                         }
                                         <a class="icon-link icon-link-2" asp-area="" asp-controller="UCart" asp-action="Index">
                                             <i class="flaticon-shopping-bag"></i>
@@ -165,7 +170,8 @@
                                                         </div>
                                                     </li>
                                                 
-                                                    @foreach(var c in Model.Cart)
+                                                  @if(Model.Cart != null){
+                                                        @foreach(var c in Model.Cart)
                                                     {
                                                         if(c.UserID == customer.UserID)
                                                         {
@@ -198,6 +204,7 @@
                                                         }
                                                         
                                                     }
+                                                  }
                                                     <li>
                                                         <div class="cart__sub d-flex justify-content-between align-items-center">
                                                             <h6>Subtotal</h6>
