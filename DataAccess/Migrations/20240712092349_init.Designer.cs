@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240710143924_PhoneS")]
-    partial class PhoneS
+    [Migration("20240712092349_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -378,14 +378,15 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VoucherID"), 1L, 1);
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateEnded")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateStarted")
                         .HasColumnType("datetime2");
-
-                    b.Property<float>("PercentSale")
-                        .HasColumnType("real");
 
                     b.Property<float>("PriceSale")
                         .HasColumnType("real");

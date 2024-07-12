@@ -14,13 +14,15 @@ namespace CSharp_MVC.Controllers
         private readonly ApplicationDbContext _db;
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
+        private readonly IVoucherService _voucherService;
 
-        public UCartController(ILogger<UCartController> logger, ApplicationDbContext db, IProductService productService, ICartService cartService)
+        public UCartController(ILogger<UCartController> logger, ApplicationDbContext db, IProductService productService, ICartService cartService, IVoucherService voucherService)
         {
             _logger = logger;
             _db = db;
             _productService = productService;
             _cartService = cartService;
+            _voucherService = voucherService;
         }
 
         public IActionResult Index()
@@ -49,6 +51,7 @@ namespace CSharp_MVC.Controllers
             uCartVm.Products = products;
             uCartVm.Cart = cart;
 
+            ViewBag.endSum = -1;
             return View(uCartVm);
         }
 
@@ -80,6 +83,30 @@ namespace CSharp_MVC.Controllers
             var result = await _cartService.AddProduct(model.UserId, model.ProductId, model.Quantity);
             var response = new { message = result };
             return Json(response);
+
+        }
+
+        [HttpGet("UCart/GetValueCode")]
+        public IActionResult GetValueCode(string code) 
+        {
+
+            var result = _voucherService.GetByVoucherCode(code);
+            
+            if(result != null)
+            {
+                if(result.DateEnded > DateTime.Now && result.DateStarted < DateTime.Now && result.UseTimess > 0)
+                {
+
+                    ViewBag.abc = result.VoucherID;
+                    var model = new VoucherCodeModel
+                    {
+                        Id = result.VoucherID,
+                        Price = result.PriceSale,
+                    };
+                    return Json(model);
+                }
+            }
+             return NotFound();
 
         }
     }

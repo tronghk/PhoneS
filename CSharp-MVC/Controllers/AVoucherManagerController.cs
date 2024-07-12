@@ -31,7 +31,7 @@ namespace CSharp_MVC.Controllers
                 VoucherID = entity.VoucherID,
                 DateStarted = entity.DateStarted,
                 DateEnded = entity.DateEnded,
-                PercentSale = entity.PercentSale,
+                Code = entity.Code,
                 PriceSale = entity.PriceSale,
                 UseTimess = entity.UseTimess
 
@@ -54,7 +54,7 @@ namespace CSharp_MVC.Controllers
                 VoucherID = entity.VoucherID,
                 DateStarted = entity.DateStarted,
                 DateEnded = entity.DateEnded,
-                PercentSale = entity.PercentSale,
+                Code = entity.Code,
                 PriceSale = entity.PriceSale,
 
             }).ToList();
@@ -76,7 +76,7 @@ namespace CSharp_MVC.Controllers
             {
                 DateStarted = request.DateStarted,
                 DateEnded = request.DateEnded,
-                PercentSale = request.PercentSale,
+                Code = request.Code,
                 UseTimess = request.UseTimess
 
             };
@@ -112,7 +112,7 @@ namespace CSharp_MVC.Controllers
                 VoucherID = entity.VoucherID,
                 DateStarted = entity.DateStarted,
                 DateEnded = entity.DateEnded,
-                PercentSale = entity.PercentSale,
+                Code = entity.Code,
                 PriceSale = entity.PriceSale,
                 UseTimess = entity.UseTimess
 

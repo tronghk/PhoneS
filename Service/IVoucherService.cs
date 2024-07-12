@@ -18,6 +18,8 @@ namespace Service
 
         IEnumerable<Voucher> GetAll();
         Voucher GetByVoucherId(int voucherID);
+
+        Voucher GetByVoucherCode(string code);
         IEnumerable<Voucher> search(string name);
     }
 }

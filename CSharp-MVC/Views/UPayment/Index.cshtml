@@ -16,6 +16,7 @@
     {
         customer = JsonConvert.DeserializeObject<UserVm>(session);
     }
+    float price = ViewBag.price;
 }
 
 @model UPaymentVm;
@@ -179,7 +180,7 @@
                                 <p>Standard</p>
                             </div>
                             <div class="option-price col-lg-6 p-2 d-flex justify-content-lg-end">
-                                <p>$5.00</p>
+                                <p>Free</p>
                             </div>
                         </div>
                     </div>
@@ -216,7 +217,7 @@
                                     }
                                 }
                             }
-                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID)">
+                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID})">
                                 <button class="confirm-btn btn btn-outline-danger p-lg-3 p-sm-2 w-sm-100">
                                     Create Order
                                 </button>
@@ -278,12 +279,25 @@
                 <div class="product-summary">
                     <div class="sub-total d-flex justify-content-between pb-2 pt-3">
                         <div class="sub-text">
-                            <p>Sub Total</p>
+                            <p>Tổng tiền</p>
                         </div>
                         <div class="sub-money">
                             <p>@{
-                                    string total = (subtotal).ToString("N");
+                                    string total = String.Format("{0:0.##}", subtotal);
                                 }@total đ
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="sub-total d-flex justify-content-between pb-2 pt-3">
+                        <div class="sub-text">
+                            <p>Giảm giá</p>
+                        </div>
+                        <div class="sub-money">
+                            <p>
+                                @{
+                                    string formatted = String.Format("{0:0.##}", price);
+                                }@formatted đ
                             </p>
                         </div>
                     </div>
@@ -292,7 +306,7 @@
                             <p>Shipping</p>
                         </div>
                         <div class="method-price">
-                            <p>5.00$</p>
+                            <p>Free</p>
                         </div>
                     </div>
                 </div>
@@ -310,8 +324,8 @@
                                
                                     
                                 
-                                subtotal += 5.0f;
-                                string text = (subtotal).ToString("N");
+                                float ab  = subtotal + 5.0f - price;
+                                string text = String.Format("{0:0.##}", ab);
                             }
                             <div class="sum d-flex"><p>@text đ</p></div>
                         </div>

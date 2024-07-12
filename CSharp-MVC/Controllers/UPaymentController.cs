@@ -14,7 +14,10 @@ namespace CSharp_MVC.Controllers
         private readonly IPaymentService _paymentService;
         private readonly ICustomerService _customerService;
 
-        public UPaymentController(ILogger<UPaymentController> logger, ApplicationDbContext db, IProductService productService, ICartService cartService, IPaymentService paymentService, ICustomerService customerService)
+        private readonly IVoucherService _voucherService;
+
+        public UPaymentController(ILogger<UPaymentController> logger, ApplicationDbContext db, IProductService productService, ICartService cartService
+            , IPaymentService paymentService, ICustomerService customerService, IVoucherService voucherService)
         {
             _logger = logger;
             _db = db;
@@ -22,9 +25,11 @@ namespace CSharp_MVC.Controllers
             _cartService = cartService;
             _paymentService = paymentService;
             _customerService = customerService;
+            _voucherService = voucherService;
         }
 
-        public IActionResult Index()
+
+        public IActionResult Index(int id)
         {
             var products = _productService.GetAll().Select(entity => new ProductVm
             {
@@ -56,7 +61,16 @@ namespace CSharp_MVC.Controllers
             uPaymentVm.Products = products;
             uPaymentVm.Cart = cart;
             uPaymentVm.User = user;
-
+            if(id!= -1)
+            {
+              var v =  _voucherService.GetByVoucherId(id);
+                ViewBag.price = v.PriceSale;
+            }
+            else
+            {
+                ViewBag.price = 0;
+            }
+            
             return View(uPaymentVm);
         }
 

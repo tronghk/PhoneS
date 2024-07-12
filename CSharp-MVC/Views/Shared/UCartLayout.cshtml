@@ -143,7 +143,7 @@
                                                 {
                                                     if(p.ProductID == c.ProductID)
                                                     {
-                                                        subtotal += p.Price;
+                                                        subtotal += (p.Price* c.Quantity);
                                                     }
                                                 }
                                             }
@@ -154,7 +154,11 @@
                                             <span class="count count-2">@count</span>
                                             <span class="text">
                                                 <span class="sub">Your Cart:</span>
-                                                $@subtotal
+                                                @{
+                                                    string changeSub = String.Format("{0:N0}", subtotal);
+                                                    
+                                                }
+                                                @changeSub đ
                                             </span>
                                         </a>
                                         <div class="cart">
@@ -186,7 +190,14 @@
                                                                                 <div class="cart__details">
                                                                                     <h6><a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@p.ProductID">@p.ProductName</a></h6>
                                                                                     <div class="cart__price">
-                                                                                        <span>@p.Price</span>
+                                                                                        <span>
+                                                                                            @{
+                                                                                                string changePr = String.Format("{0:N0}", p.Price) + "đ";
+
+                                                                                            }
+
+                                                                                            @changePr
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -203,7 +214,13 @@
                                                     <li>
                                                         <div class="cart__sub d-flex justify-content-between align-items-center">
                                                             <h6>Subtotal</h6>
-                                                            <span class="cart__sub-total">$@subtotal</span>
+                                                            <span class="cart__sub-total">
+                                                                @{
+                                                                    string changesu = String.Format("{0:N0}", subtotal);
+
+                                                                }
+                                                                @changesu đ
+                                                            </span>
                                                         </div>
                                                     </li>
                                                     <li>

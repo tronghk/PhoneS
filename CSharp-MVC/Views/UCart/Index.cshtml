@@ -7,6 +7,7 @@
     var listProduct = ViewBag.listProduct;
     var listCategory = ViewBag.listCategory;
     Layout = "~/Views/Shared/UCartLayout.cshtml";
+    
 }
 
 @{
@@ -16,6 +17,8 @@
     {
         customer = JsonConvert.DeserializeObject<UserVm>(session);
     }
+    float SumMoney = 0;
+    int endSum = -1;
 }
 
 @model UCartVm;
@@ -77,9 +80,12 @@
                                                     </td>
                                                     <!-- Giá sản phẩm -->
                                                     @{
-                                                         
-                                                           
+
+
                                                         string total = (@p.Price * @c.Quantity).ToString("N");
+                                                        SumMoney += (p.Price * c.Quantity);
+                                                       
+
                                                     }
                                                     <td class="product-subtotal"><span class="amount">@total</span></td>
                                                     <!-- Xóa sản phẩm khỏi giỏ hàng -->
@@ -97,8 +103,8 @@
                             <!-- Mã khuyến mãi Start -->
                             <div class="coupon-all">
                                 <div class="coupon">
-                                    <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Code" type="text">
-                                    <button class="tp-btn-h1" name="apply_coupon" type="submit">
+                                    <input  id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Code" type="text">
+                                    <button id="btn_discount" class="tp-btn-h1" name="apply_coupon" type="button">
                                         Mã giảm giá
                                     </button>
                                 </div>
@@ -118,13 +124,13 @@
                                 <h2>Cart totals</h2>
                                 <ul class="mb-20">
                                     <!-- Tổng giá hàng -->
-                                    <li>Subtotal <span>$25</span></li>
+                                    <li>Subtotal <span>@String.Format("{0:N0}", SumMoney)</span></li>
                                     <!-- Mã giảm giá -->
-                                    <li>Coupon <span>$00</span></li>
+                                    <li>Coupon <span id="span_discout">$00</span></li>
                                     <!-- Tổng thanh toán -->
-                                    <li>Total <span>$25</span></li>
+                                    <li>Total <span> <span id="total_product">@String.Format("{0:N0}" + "đ", SumMoney)</span></li>
                                 </ul>
-                                <a class="tp-btn-h1" asp-controller="UPayment" asp-action="Index">Đặt hàng</a>
+                                <a id="payment" class="tp-btn-h1" >Đặt hàng</a>
                             </div>
                         </div>
                     </div>
@@ -137,9 +143,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
-    const btn_login = document.querySelector(".block-userlink");
 
+    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+    const btn_login = document.querySelector(".block-userlink");  
+
+    console.log("abc");
     if (cu.Account != null) {
         btn_login.style.visibility = "hidden";
     } else {
@@ -213,7 +221,49 @@
 
 
         });
+
+
     }
+    var idDiscount = 0;
+    document.getElementById("btn_discount").onclick = function () {
+        var getCode = $('#coupon_code').val();
+       
+        $.ajax({
+            url: '/UCart/GetValueCode',
+            type: 'GET',
+            contentType: 'application/json',
+            // dữ liệu đẩy xuống
+            data: {code: getCode},
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+              
+                var abc = 1;
+                idDiscount = response.id;
+                const p = document.getElementById("span_discout");
+                p.innerHTML = response.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                document.getElementById("payment").setAttribute('href', "UPayment/Index/"+response.id)
+                document.getElementById("total_product").innerHTML = sumTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+               
+            },
+            error: function (error, xhr, status) {
+                const p = document.getElementById("span_discout");
+                console.log("error");
+                var test = @SumMoney;
+                p.innerHTML = 0;
+                document.getElementById("payment").setAttribute('href', "UPayment/Index/" + (-1))
+                document.getElementById("total_product").innerHTML = test.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });;
+            }
+
+
+        });
+
+       
+
+    }
+
+   
 
 
 </script>

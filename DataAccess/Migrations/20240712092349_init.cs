@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class PhoneS : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -97,7 +97,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateStarted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateEnded = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PercentSale = table.Column<float>(type: "real", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PriceSale = table.Column<float>(type: "real", nullable: false),
                     UseTimess = table.Column<int>(type: "int", nullable: false)
                 },
