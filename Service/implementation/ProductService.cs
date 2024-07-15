@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Service.implementation
 {
@@ -71,7 +72,7 @@ namespace Service.implementation
         }
         public Product GetByProductId(int productID)
         {
-            return _context.Product.Where(x => x.ProductID == productID).FirstOrDefault();
+            return _context.Product.Where(x => x.ProductID == productID).FirstOrDefault()!;
         }
         public async Task<string> UpdateAsync(Product product)
         {
@@ -145,6 +146,14 @@ namespace Service.implementation
         public int GetTotalCount()
         {
             return _context.Product.Count();
+        }
+
+        public Product GetProductById(int product)
+        {
+            return _context.Product.Where(x => x.ProductID == product).FirstOrDefault();
+
+
+
         }
     }
 }

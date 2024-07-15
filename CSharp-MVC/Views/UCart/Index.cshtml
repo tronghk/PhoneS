@@ -89,7 +89,7 @@
                                                     }
                                                     <td class="product-subtotal"><span class="amount">@total</span></td>
                                                     <!-- Xóa sản phẩm khỏi giỏ hàng -->
-                                                    <td class="product-remove"><a href="@Url.Action("Delete", "UHome", new { cartId = @c.CartID })"><i class="fa fa-times"></i></a></td>
+                                                    <td class="product-remove"><a href="@Url.Action("Delete", "UCart", new { cartId = @c.CartID })"><i class="fa fa-times"></i></a></td>
                                                 </tr>
                                             }
                                         }
@@ -145,14 +145,17 @@
 <script>
 
     var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
-    const btn_login = document.querySelector(".block-userlink");  
+    const btn_login = document.querySelector(".block-userlink");
+    const btn_cart = document.getElementById("Cart");
+    console.log(btn_cart)
 
-    console.log("abc");
     if (cu.Account != null) {
+        btn_cart.style.visibility = "hidden"
         btn_login.style.visibility = "hidden";
     } else {
         window.location.href = '/UHome/Index';
         btn_login.style.visibility = "visible";
+        btn_cart.style.visibility = "visible"
     }
     function setAddProduct(productId,quantity){
          var userId = @customer.UserID;
@@ -224,6 +227,7 @@
 
 
     }
+    document.getElementById("payment").setAttribute('href', "UPayment/Index/" + (-1));
     var idDiscount = 0;
     document.getElementById("btn_discount").onclick = function () {
         var getCode = $('#coupon_code').val();

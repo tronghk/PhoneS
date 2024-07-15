@@ -62,6 +62,16 @@ namespace Service.implementation
             return result;
         }
 
+        public IEnumerable<Bill> searchAsync(int customerId)
+        {
+            foreach (var bill in _context.Bill)
+            {
+                if(bill.CustomerID == customerId)
+                    yield return bill;
+            }
+           
+        }
+
         public Task UpdateAsync(Bill bill)
         {
             throw new NotImplementedException();

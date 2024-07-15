@@ -17,6 +17,7 @@
         customer = JsonConvert.DeserializeObject<UserVm>(session);
     }
     float price = ViewBag.price;
+    int voucherId = ViewBag.voucherId;
 }
 
 @model UPaymentVm;
@@ -85,29 +86,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <!-- Country Shipping Infomation-->
-                        <div class="shipping-country pt-2">
-                            <div class="dropdown">
-                                <button id="saved-countries"
-                                        class="btn btn-outline-secondary dropdown-toggle w-100"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                    Country/Region
-                                </button>
-                                <ul id="countries-list" class="dropdown-menu w-100">
-                                    <li>
-                                        <a id="country" class="dropdown-item" href="#">Viet Nam</a>
-                                    </li>
-                                    <li>
-                                        <a id="country" class="dropdown-item" href="#">United States</a>
-                                    </li>
-                                    <li>
-                                        <a id="country" class="dropdown-item" href="#">Japan</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                         <!-- Receiver's Name -->
                         <div class="shipping-name row g-1 pt-2">
                             <div class="first-name form-floating col-md-6">
@@ -151,13 +129,6 @@
                                        id="city"
                                        placeholder="City" />
                             </div>
-                            <div class="ward pt-2">
-                                <!-- Input customer's ward -->
-                                <input type="text"
-                                       class="form-control"
-                                       id="ward"
-                                       placeholder="Ward" />
-                            </div>
                             <div class="district pt-2">
                                 <!-- Input customer's district -->
                                 <input type="text"
@@ -165,6 +136,14 @@
                                        id="district"
                                        placeholder="District" />
                             </div>
+                            <div class="ward pt-2">
+                                <!-- Input customer's ward -->
+                                <input type="text"
+                                       class="form-control"
+                                       id="ward"
+                                       placeholder="Ward" />
+                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -191,7 +170,7 @@
                         <div class="home-button d-flex align-content-center pt-3">
                             <box-icon name="chevron-left" class="pt-2"></box-icon>
                             <!-- Back to Home page -->
-                            <a href=""
+                            <a href="@Url.Action("Index","UCart")"
                                class="link-secondary link-offset-2 link-unde rline-opacity-25 link-underl ine-opacity-100-hover pt-2">Need more ? Return to store</a>
                         </div>
                         <div class="confirm-holder pb-3 col-md-6 d-flex justify-content-end col-sm-6">
@@ -217,7 +196,7 @@
                                     }
                                 }
                             }
-                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID})">
+                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal,voucher = voucherId, cusid = @cusid})">
                                 <button class="confirm-btn btn btn-outline-danger p-lg-3 p-sm-2 w-sm-100">
                                     Create Order
                                 </button>
@@ -321,9 +300,6 @@
                         <div class="total-price d-flex justify-content-between">
                             <div class="currency pe-3 d-flex"><p>NHD</p></div>
                             @{
-                               
-                                    
-                                
                                 float ab  = subtotal + 5.0f - price;
                                 string text = String.Format("{0:0.##}", ab);
                             }

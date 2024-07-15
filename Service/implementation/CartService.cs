@@ -54,7 +54,8 @@ namespace Service.implementation
             {
                 var cart = GetByCartID(cartid);
                 _context.Cart.Remove(cart);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(true);
+               
             }
             catch (Exception ex)
             {

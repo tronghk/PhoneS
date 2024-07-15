@@ -97,7 +97,10 @@
                                     {
                                         <div class="single-widget-category">
                                             @*<input type="checkbox" id="cat-item-@category.ProdCateID" name="cat-item" />*@
-                                            <label><a href="@Url.Action("Index", "UProducts", new { categoryId = category.ProdCateID })">@category.ProdCateName</a></label>
+                                            <a href="@Url.Action("Index", "UProducts", new { categoryId = category.ProdCateID })">
+                                                <label>@category.ProdCateName</label>
+                                            </a>
+                                            
                                         </div>
                                     }
                                 </form>
@@ -411,7 +414,7 @@
                                  id="FourCol"
                                  role="tabpanel"
                                  aria-labelledby="FourCol-tab">
-                                <div class="tp-wrapper">
+                                <div style="display:flex; flex-wrap: wrap; width:100%"class="tp-wrapper">
                                         <!--Product starts here-->
                                         @foreach (var products in Model.Products)
                                         {

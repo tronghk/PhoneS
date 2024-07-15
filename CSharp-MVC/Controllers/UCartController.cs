@@ -15,14 +15,21 @@ namespace CSharp_MVC.Controllers
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
         private readonly IVoucherService _voucherService;
+        private readonly ICustomerService _customerService;
+        private readonly IBillService _billService;
+        private readonly IProductBillService _productBillService;
 
-        public UCartController(ILogger<UCartController> logger, ApplicationDbContext db, IProductService productService, ICartService cartService, IVoucherService voucherService)
+        public UCartController(ILogger<UCartController> logger, ApplicationDbContext db, IProductService productService,
+            ICartService cartService, IVoucherService voucherService, ICustomerService customerService, IBillService billService, IProductBillService productBillService)
         {
             _logger = logger;
             _db = db;
             _productService = productService;
             _cartService = cartService;
             _voucherService = voucherService;
+            _customerService = customerService;
+            _billService = billService;
+            _productBillService = productBillService;
         }
 
         public IActionResult Index()
@@ -47,17 +54,19 @@ namespace CSharp_MVC.Controllers
                 ProductID = entity.ProductID
             }).ToList();
 
+            
             var uCartVm = new UCartVm();
             uCartVm.Products = products;
+          
             uCartVm.Cart = cart;
 
             ViewBag.endSum = -1;
             return View(uCartVm);
         }
 
-        public IActionResult Delete(int cartid)
+        public async Task<IActionResult> Delete(int cartid)
         {
-            _cartService.DeleteById(cartid);
+            await _cartService.DeleteById(cartid);
             return RedirectToAction("Index");
         }
 
@@ -74,6 +83,62 @@ namespace CSharp_MVC.Controllers
             var response = new { message = result };
             return Json(response);
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HistoryBill(int id)
+        {
+
+            Customer cu = _customerService.GetByCustomerUserId(id+"");
+            if (cu != null)
+            {
+               var list = _billService.searchAsync(cu.CustomerID).Select(entity => new BillModel
+               {
+                   BillID = entity.BillID,
+                   DateCreated = entity.DateCreated,
+                   MoneySum = entity.MoneySum,
+                   EmployeeID = entity.EmployeeID,
+                   Voucher = entity.VoucherID
+               }).ToList();
+
+                foreach (var item in list)
+                {
+                    var value = _voucherService.GetByVoucherId(int.Parse(item.Voucher + ""));
+                    if (value != null)
+                        item.Voucher = value.PriceSale;
+                    else item.Voucher = 0;
+                }
+
+                foreach(var item in list)
+                {
+                    var listP = _productBillService.GetByProductBillId(item.BillID);
+                    var listRe = new List<ProductModel>();
+                    foreach(var value in listP)
+                    {
+                        var product = _productService.GetProductById(value.ProductID);
+                        listRe.Add(new ProductModel
+                        {
+                            BillId = value.BillID,
+                            ProductName = product.ProductName,
+                            Price = product.Price
+                            ,Quantity = value.Quantity,
+                            Image = product.Picture
+
+                        });
+                    }
+                    item.Products = listRe;
+                    listRe = new List<ProductModel>();
+                    
+                }
+
+
+                ViewBag.list = list;
+
+
+                return View();
+            }
+           
+            return View();
         }
 
         [HttpPost]

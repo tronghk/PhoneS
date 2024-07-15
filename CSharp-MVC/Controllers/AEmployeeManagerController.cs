@@ -105,13 +105,13 @@ namespace CSharp_MVC.Controllers
             };
             var user = new User
             {
-                UserID = request.EmployeeID,
+              
                 Account = request.Email,
-                Password = "3211",
+                Password = request.Password,
                 RoleId = 3,
             };
             await _userService.CreateAsyncEmployee(user);
-            User u = _userService.GetByUserAccount(employee.Email, "3211");
+            User u = _userService.GetByUserAccount(employee.Email, request.Password);
             employee.Account = u.UserID + "";
             string result = await _employeeService.CreateAsync(employee);
             string message = "Thêm nhân viên" + _unityService.getMessage(result);

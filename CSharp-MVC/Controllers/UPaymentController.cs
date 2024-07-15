@@ -65,24 +65,25 @@ namespace CSharp_MVC.Controllers
             {
               var v =  _voucherService.GetByVoucherId(id);
                 ViewBag.price = v.PriceSale;
+                ViewBag.voucherId = id;
             }
             else
             {
                 ViewBag.price = 0;
+                ViewBag.voucherId = -1;
             }
             
             return View(uPaymentVm);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateOrder(float money, int cusid)
+  
+        public async Task<IActionResult> CreateOrder(float money, int voucher, int cusid)
         {
             var bill = new Entity.Bill();
             bill.DateCreated = DateTime.Now;
             bill.MoneySum = money;
-            bill.EmployeeID = 4;
+            bill.EmployeeID = -1;
             bill.CustomerID = cusid;
-            bill.VoucherID = 1;
+            bill.VoucherID = voucher;
 
             var customer = _customerService.GetByCustomerId(cusid);
 
@@ -102,7 +103,8 @@ namespace CSharp_MVC.Controllers
            await _paymentService.CreateAsync(bill, length, IDs);
 
             await  _paymentService.ClearCart(int.Parse(customer.Account));
-            return RedirectToAction("Index");
+            return RedirectToAction("HistoryBill", "UCart", new {id = customer.CustomerID});
         }
+        
     }
 }
