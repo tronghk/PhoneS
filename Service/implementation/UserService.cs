@@ -118,10 +118,10 @@ namespace Service.implementation
                 {
                     Account = user.Account,
                     Password = user.Password,
+                    ForgotPassowrd = "",
                     RoleId = 3
                 };
-                _context.TaiKhoan.AddAsync(newuser);
-
+                _context.TaiKhoan.Add(newuser);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

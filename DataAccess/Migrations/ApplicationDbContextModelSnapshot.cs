@@ -376,14 +376,15 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VoucherID"), 1L, 1);
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateEnded")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateStarted")
                         .HasColumnType("datetime2");
-
-                    b.Property<float>("PercentSale")
-                        .HasColumnType("real");
 
                     b.Property<float>("PriceSale")
                         .HasColumnType("real");

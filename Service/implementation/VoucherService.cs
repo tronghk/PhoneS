@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Service.implementation
 {
+
     public class VoucherService : IVoucherService
     {
         private ApplicationDbContext _context;
@@ -69,6 +70,11 @@ namespace Service.implementation
             {
                 yield return voucher;
             }
+        }
+
+        public Voucher GetByVoucherCode(string code)
+        {
+            return _context.Voucher.Where(x => x.Code == code).FirstOrDefault();
         }
 
         public Voucher GetByVoucherId(int voucherID)

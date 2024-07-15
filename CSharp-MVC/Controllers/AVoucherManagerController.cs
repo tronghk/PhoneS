@@ -31,7 +31,7 @@ namespace CSharp_MVC.Controllers
                 VoucherID = entity.VoucherID,
                 DateStarted = entity.DateStarted,
                 DateEnded = entity.DateEnded,
-                PercentSale = entity.PercentSale,
+                Code = entity.Code,
                 PriceSale = entity.PriceSale,
                 UseTimess = entity.UseTimess
 
@@ -54,11 +54,17 @@ namespace CSharp_MVC.Controllers
                 VoucherID = entity.VoucherID,
                 DateStarted = entity.DateStarted,
                 DateEnded = entity.DateEnded,
-                PercentSale = entity.PercentSale,
+                Code = entity.Code,
                 PriceSale = entity.PriceSale,
 
             }).ToList();
-            int max = listVoucher[0].VoucherID;
+
+            int max = 0;
+            if (listVoucher.Count > 0)
+            {
+                max = listVoucher[0].VoucherID;
+            }
+           
             foreach (var item in listVoucher)
             {
                 if (max < item.VoucherID)
@@ -76,11 +82,11 @@ namespace CSharp_MVC.Controllers
             {
                 DateStarted = request.DateStarted,
                 DateEnded = request.DateEnded,
-                PercentSale = request.PercentSale,
+                Code = request.Code,
+                PriceSale = request.PriceSale,
                 UseTimess = request.UseTimess
 
             };
-            p.PriceSale = 0;
             string result = await _voucherService.CreateAsync(p);
             string message = "Thêm Voucher" + _unityService.getMessage(result);
             return RedirectToAction("Index", "AVoucherManager", new { @id = 0, @result = result, @message = message });
@@ -112,7 +118,7 @@ namespace CSharp_MVC.Controllers
                 VoucherID = entity.VoucherID,
                 DateStarted = entity.DateStarted,
                 DateEnded = entity.DateEnded,
-                PercentSale = entity.PercentSale,
+                Code = entity.Code,
                 PriceSale = entity.PriceSale,
                 UseTimess = entity.UseTimess
 

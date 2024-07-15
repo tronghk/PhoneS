@@ -39,7 +39,7 @@
 <!-- breadcrumb__area-end -->
 <!-- product-details-start -->
 <div class="product-details">
-    <div class="container">
+    <div style="margin-top:192px" class="container">
         <div class="row">
             <div class="col-xl-6">
                 <div class="product__details-nav d-sm-flex align-items-start">
@@ -61,7 +61,7 @@
                                     splitPicture = obj.ImageLink.Split('.');
                                 }
                                 <button class="nav-link" id="@splitPicture[0]-tab" data-bs-toggle="tab" data-bs-target="#@splitPicture[0]" type="button" role="tab" aria-controls="@splitPicture[0]" aria-selected="false">
-                                    <img src="~/Image/@Model.ProductID/@obj.ImageLink" alt="">
+                                    <img src="~/StaticFile/Images/products/@Model.ProductID/@obj.ImageLink" alt="">
                                 </button>
                             </li>
                         }
@@ -209,4 +209,14 @@
         </div>
     </div>
 </div>
+<script>
+    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+    const btn_login = document.querySelector(".block-userlink");
+
+    if (cu.Account != null) {
+        btn_login.style.visibility = "hidden";
+    } else {
+        btn_login.style.visibility = "visible";
+    }
+</script>
 <!-- product-infomation-end -->

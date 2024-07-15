@@ -192,8 +192,10 @@ namespace CSharp_MVC.Controllers
                 await _productInfoService.CreateAsync(productInf);
             }
 
-            return RedirectToAction("Index", "AProductManager", new { @id = 0, @result = result, @message = message });
+            return RedirectToAction("Index");
         }
+
+
         [Route("AProductManager/Edit/{id:int}")]
         public IActionResult Edit(int id)
         {
@@ -241,32 +243,37 @@ namespace CSharp_MVC.Controllers
             string message = "";
             int idCategory = _productCategoryService.GetByProductCategoryName(Request.Form["Category"].ToString()).ProdCateID;
             string cate = Request.Form["Description"].ToString();
-
+            string newName = "";
             IFormFile file = request.Picture;
 
 
-            var fileName = file.FileName;
-            DateTime dt = DateTime.Now; // Or whatever
-            string s = dt.ToString("yyyyMMddHHmmss");
-            string newName = "IMG-" + s + fileName.Substring(fileName.Length - 4);
-            if (fileName.Length > 0)
+            if (file == null)
             {
 
-                string path = Path.Combine(_environment.ContentRootPath, "StaticFile", "Images", newName);
-
-                using (var st = System.IO.File.Create(path))
-                {
-                    await file.CopyToAsync(st);
-                }
-
-
-            }
-
-            if (file == null) {
-
-                var pr =  _productService.GetByProductId(request.ProductID);
+                var pr = _productService.GetByProductId(request.ProductID);
                 newName = pr.Picture;
             }
+            else
+            {
+                var fileName = file.FileName;
+                DateTime dt = DateTime.Now; // Or whatever
+                string s = dt.ToString("yyyyMMddHHmmss");
+                newName = "IMG-" + s + fileName.Substring(fileName.Length - 4);
+                if (fileName.Length > 0)
+                {
+
+                    string path = Path.Combine(_environment.ContentRootPath, "StaticFile", "Images", newName);
+
+                    using (var st = System.IO.File.Create(path))
+                    {
+                        await file.CopyToAsync(st);
+                    }
+
+
+                }
+            }
+
+           
 
             if (!ModelState.IsValid)
             {
@@ -300,7 +307,7 @@ namespace CSharp_MVC.Controllers
                 await _productInfoService.UpdateAsync(productInf);
             }
            
-            return RedirectToAction("Index", "AProductManager", new { @id = 0, @result = result, @message = message });
+            return RedirectToAction("Index");
 
         }
 
@@ -311,7 +318,7 @@ namespace CSharp_MVC.Controllers
             await _productInfoService.DeleteById(id);
             string result= await _productService.DeleteById(id);
             string message = "Xóa sản phẩm" + _unityService.getMessage(result);
-            return RedirectToAction("Index", "AProductManager", new { @id = 0, @result = result, @message = message });
+            return RedirectToAction("Index");
         }
         [HttpPost]
         public IActionResult Search()

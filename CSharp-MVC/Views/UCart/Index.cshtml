@@ -7,6 +7,7 @@
     var listProduct = ViewBag.listProduct;
     var listCategory = ViewBag.listCategory;
     Layout = "~/Views/Shared/UCartLayout.cshtml";
+    
 }
 
 @{
@@ -16,13 +17,16 @@
     {
         customer = JsonConvert.DeserializeObject<UserVm>(session);
     }
+    float SumMoney = 0;
+    int endSum = -1;
 }
 
 @model UCartVm;
 
+
 <!-- cart-area-start -->
 <section class="cart-area pt-120 pb-120">
-    <div class="container">
+    <div style="margin-top:100px" class="container">
         <div class="row">
             <div class="col-12">
                 <form action="#">
@@ -63,19 +67,29 @@
                                                     <!-- Số lượng sản phẩm -->
                                                     <td class="product-price">
                                                         <span class="amount">
-                                                            @p.Price
+                                                            @{
+                                                                string formattedNumber = @p.Price.ToString("N");
+                                                            }
+                                                            @formattedNumber
                                                         </span>
                                                     </td>
                                                     <td class="product-quantity">
-                                                        <div class="cart-plus-minus"><input type="text" value="@c.Quantity"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                                                        <div onclick="setAddProduct(@c.ProductID,@c.Quantity)" class="cart-plus-minus"><input class="@c.ProductID" type="text" value="@c.Quantity">
+                                                            <div onclick="setRemoveProduct(@c.ProductID,@c.Quantity)" class="dec qtybutton">-</div><div id="btn_addP" class=" inc qtybutton">+</div>
+                                                        </div>
                                                     </td>
                                                     <!-- Giá sản phẩm -->
                                                     @{
-                                                        float total = @p.Price * @c.Quantity;
+
+
+                                                        string total = (@p.Price * @c.Quantity).ToString("N");
+                                                        SumMoney += (p.Price * c.Quantity);
+                                                       
+
                                                     }
                                                     <td class="product-subtotal"><span class="amount">@total</span></td>
                                                     <!-- Xóa sản phẩm khỏi giỏ hàng -->
-                                                    <td class="product-remove"><a href="@Url.Action("Delete", "UHome", new { cartId = @c.CartID })"><i class="fa fa-times"></i></a></td>
+                                                    <td class="product-remove"><a href="@Url.Action("Delete", "UCart", new { cartId = @c.CartID })"><i class="fa fa-times"></i></a></td>
                                                 </tr>
                                             }
                                         }
@@ -89,17 +103,16 @@
                             <!-- Mã khuyến mãi Start -->
                             <div class="coupon-all">
                                 <div class="coupon">
-                                    <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
-                                    <button class="tp-btn-h1" name="apply_coupon" type="submit">
-                                        Apply
-                                        coupon
+                                    <input  id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Code" type="text">
+                                    <button id="btn_discount" class="tp-btn-h1" name="apply_coupon" type="button">
+                                        Mã giảm giá
                                     </button>
                                 </div>
                                 <!-- Mã khuyến mãi End -->
                                 <!-- Sửa giỏ hàng Start -->
-                                <div class="coupon2">
+                               @*  <div class="coupon2">
                                     <button class="tp-btn-h1" name="update_cart" type="submit">Update cart</button>
-                                </div>
+                                </div> *@
                                 <!-- Sửa giỏ hàng End -->
                             </div>
                         </div>
@@ -111,13 +124,13 @@
                                 <h2>Cart totals</h2>
                                 <ul class="mb-20">
                                     <!-- Tổng giá hàng -->
-                                    <li>Subtotal <span>$25</span></li>
+                                    <li>Subtotal <span>@String.Format("{0:N0}", SumMoney)</span></li>
                                     <!-- Mã giảm giá -->
-                                    <li>Coupon <span>$00</span></li>
+                                    <li>Coupon <span id="span_discout">$00</span></li>
                                     <!-- Tổng thanh toán -->
-                                    <li>Total <span>$25</span></li>
+                                    <li>Total <span> <span id="total_product">@String.Format("{0:N0}" + "đ", SumMoney)</span></li>
                                 </ul>
-                                <a class="tp-btn-h1" asp-controller="UPayment" asp-action="Index">Proceed to checkout</a>
+                                <a id="payment" class="tp-btn-h1" >Đặt hàng</a>
                             </div>
                         </div>
                     </div>
@@ -127,14 +140,135 @@
     </div>
 </section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
+
     var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
     const btn_login = document.querySelector(".block-userlink");
+    const btn_cart = document.getElementById("Cart");
+    console.log(btn_cart)
 
     if (cu.Account != null) {
+        btn_cart.style.visibility = "hidden"
         btn_login.style.visibility = "hidden";
     } else {
+        window.location.href = '/UHome/Index';
         btn_login.style.visibility = "visible";
+        btn_cart.style.visibility = "visible"
     }
+    function setAddProduct(productId,quantity){
+         var userId = @customer.UserID;
+        
+         var model = {
+            quantity: String(quantity),
+             userId : String(userId),
+            productId: String(productId),
+         }
+
+        var jsonString = JSON.stringify(model);
+        console.log(jsonString);
+        $.ajax({
+            url: '/UCart/AddProduct',
+            type: 'POST',
+            contentType: 'application/json',
+            // dữ liệu đẩy xuống
+            data: jsonString,
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+                if (response.message != null) {
+                    const p = document.querySelector("." + productId);
+                    p.ariaValueMax = response.message;
+                }
+
+            },
+            error: function (error) {
+                console.log("error");
+            }
+
+
+        });
+    }
+    function setRemoveProduct(productId, quantity) {
+        var userId = @customer.UserID;
+
+        var model = {
+            quantity: String(quantity),
+            userId: String(userId),
+            productId: String(productId),
+        }
+
+        var jsonString = JSON.stringify(model);
+        console.log(jsonString);
+        $.ajax({
+            url: '/UCart/RemoveProduct',
+            type: 'POST',
+            contentType: 'application/json',
+            // dữ liệu đẩy xuống
+            data: jsonString,
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+                if (response.message != null) {
+                    const p = document.querySelector("." + productId);
+                    p.ariaValueMax = response.message;
+                }
+
+            },
+            error: function (error) {
+                console.log("error");
+            }
+
+
+        });
+
+
+    }
+    document.getElementById("payment").setAttribute('href', "UPayment/Index/" + (-1));
+    var idDiscount = 0;
+    document.getElementById("btn_discount").onclick = function () {
+        var getCode = $('#coupon_code').val();
+       
+        $.ajax({
+            url: '/UCart/GetValueCode',
+            type: 'GET',
+            contentType: 'application/json',
+            // dữ liệu đẩy xuống
+            data: {code: getCode},
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+              
+                var abc = 1;
+                idDiscount = response.id;
+                const p = document.getElementById("span_discout");
+                p.innerHTML = response.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                document.getElementById("payment").setAttribute('href', "UPayment/Index/"+response.id)
+                document.getElementById("total_product").innerHTML = sumTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+               
+            },
+            error: function (error, xhr, status) {
+                const p = document.getElementById("span_discout");
+                console.log("error");
+                var test = @SumMoney;
+                p.innerHTML = 0;
+                document.getElementById("payment").setAttribute('href', "UPayment/Index/" + (-1))
+                document.getElementById("total_product").innerHTML = test.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });;
+            }
+
+
+        });
+
+       
+
+    }
+
+   
+
+
 </script>
 <!-- cart-area-end -->

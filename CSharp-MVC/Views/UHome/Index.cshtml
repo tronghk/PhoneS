@@ -29,31 +29,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <section  class="main-products d-flex justify-content-center">
-    <div style="margin-top: 192px" class="container-fluid">
+    <div style="margin-top: 192px; display:flex" class="container-fluid">
         @if(listP.Count > 0)
         {
-            <div class="mainA col-6">
-                <!-- Link ảnh sản phẩm chính số 1-->
-                <img src="~/Image/home/main-products/1.jpg" class="img-fluid" alt="">
-                <div class="info-main1 position-absolute start-1">
-                    <h6>SUPERCHARGED FOR PROS.</h6>
-                    <h1>@listP[listP.Count-1].ProductName</h1>
-                    <p>Price from @listP[listP.Count - 1].Price<br>for 24 mo. Footnote*</p>
-                    <!-- Button dẫn tới sản phẩm chính số 1 (IPHONE X) -->
-                    <button class="btn">BUY NOW</button>
+          
+                <div class="mainA col-6">
+                    <!-- Link ảnh sản phẩm chính số 1-->
+                    <img src="~/Image/home/main-products/1.jpg" class="img-fluid" alt="">
+                    <div class="info-main1 position-absolute start-1">
+                        <h6>SUPERCHARGED FOR PROS.</h6>
+                        <h1>@listP[listP.Count - 1].ProductName</h1>
+                        <p>Price from @listP[listP.Count - 1].Price<br>for 24 mo. Footnote*</p>
+                        <!-- Button dẫn tới sản phẩm chính số 1 (IPHONE X) -->
+                    <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid =@listP[listP.Count - 1].ProductID})">
+                        <button type="submit" class="btn">BUY NOW</button>
+                        </a>
+                    </div>
                 </div>
-            </div>
+           
         }
         
         <div class="row justify-content-evenly">
             <!-- Sản phẩm chính số 1-->
          
-            <div class="mainB col-3">
+            <div style="display:flex; width:45% ;margin-left:10px;margin-top:10px; padding-right:0" class="mainB col-3">
                 <div class="row g-4">
                     @if (listP.Count > 1)
                     {
                         <!-- Sản phẩm chính số 2-->
-                        <a href="LINK THỂ LOẠI APPLE">
+                        <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid =@listP[listP.Count - 2].ProductID})">
                             <div class="mini col-12">
                                 <!-- Link ảnh sản phẩm chính số 2-->
                                 <img src="~/Image/home/main-products/2-iphones.jpg" class="img-fluid" alt="">
@@ -69,7 +73,7 @@
                     @if(listP.Count > 2)
                     {
                         <!-- Sản phẩm chính số 3-->
-                        <a href="LINK THỂ LOẠI SÁMSUNG">
+                        <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid =@listP[listP.Count - 3].ProductID})">
                             <div class="mini col-12">
                                 <!-- Link ảnh sản phẩm chính số 3-->
                                 <img src="~/Image/home/main-products/3-samsung.jpg" class="img-fluid" alt="">
@@ -83,12 +87,12 @@
                     }
                 </div>
             </div>
-            <div class="mainB col-3">
+            <div style="display:flex; width:45% ;margin-left:10px;margin-top:10px ; padding-left:0" class="mainB col-3">
                 <div class="row g-4">
                     @if(listP.Count > 3)
                     {
                         <!-- Sản phẩm chính số 4-->
-                        <a href="LINK THỂ LOẠI XIAOMI">
+                        <a href="@Url.Action("AddtoCart", "UHome", new { usid = customer.UserID, proid =@listP[listP.Count - 4].ProductID})">
                             <div class="mini col-12">
                                 <!-- Link ảnh sản phẩm chính số 4-->
                                 <img src="~/Image/home/main-products/4-xiaomi.jpg" class="img-fluid" alt="">
@@ -231,19 +235,19 @@
 <!-- Sản phẩm mới nổi bật HARDCODE-->
 <section class="new-product">
     <h2>Sản phẩm Bán chạy</h2>
-    <div class="container-fluid">
+  @*   <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div style="display:flex" class="new owl-carousel owl-theme">
+                <div style="display:flex; flex-wrap: wrap;" class="new owl-carousel owl-theme">
                     <!-- Sản phẩm số 1-->
                     @foreach (ProductVm value in listPNew)
                     {
-                        <a style="width:24%" href="#">
+                        <a style="width:24%;margin-right:10px" href="#">
                             <div class="item">
                                 <div class="card text-bg-dark">
                                     <!-- Link ảnh sản phẩm mới số 1-->
-                                    <img src="~/StaticFile/Images/@value.Picture" class="card-img" alt="...">
-                                    <div class="info-new-product card-img-overlay" style="color:white">
+                                    <img src="~/StaticFile/Images/sub3.webp" class="card-img" alt="...">
+                                    <div class="info-new-product card-img-overlay">
                                         <div class="type">@value.ProdCateName</div>
                                         <div class="name">@value.ProductName</div>
                                         <div class="price">From @value.Price$</div>
@@ -257,7 +261,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 </section>
 
 <!-- Sản phẩm đặc biệt-->
@@ -274,21 +278,21 @@
     <!-- Danh mục các sản phẩm đặc biệt-->
     <div class="row">
         <div class="col-12">
-            <div style="display:flex" class="sprod owl-carousel owl-theme">
+            <div style="display:flex; flex-wrap:wrap" class="sprod owl-carousel owl-theme">
                 @{
                     var modelList = Model.Products.ToList();
                 }
 
                 @for (int i = 0; i < modelList.Count; i += 2)
                 {
-                    <div style="width:24%" class="item">
+                    <div  style="width:32%; margin-right:10px" class="item">
                         <a href="">
                             <!-- Sản phẩm hàng 1-->
                             <div class="card">
                                 <div class="row g-0">
                                     <div class="col-6 d-flex align-items-center">
                                         <!-- Link ảnh sản phẩm đặc biệt-->
-                                        <a asp-action="Index" asp-controller="UProductDetail" asp-route-id="@modelList[i].ProductID">
+                                        <a  asp-action="Index" asp-controller="UProductDetail" asp-route-id="@modelList[i].ProductID">
                                             <img src="~/StaticFile/Images/@modelList[i].Picture" class="card-img-top" alt="...">
                                         </a>
                                     </div>
@@ -442,7 +446,9 @@
                             <!-- Nội dung blog-->
                             <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
                             <!-- Nút đọc thêm-->
-                            <button class="btn">READ MORE</button>
+                            <a href="UBlog/Index">
+                                <button class="btn">READ MORE</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -459,7 +465,9 @@
                             <!-- Nội dung blog-->
                             <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
                             <!-- Nút đọc thêm-->
-                            <button class="btn">READ MORE</button>
+                            <a href="UBlog/Index">
+                                <button class="btn">READ MORE</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -476,7 +484,9 @@
                             <!-- Nội dung blog-->
                             <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
                             <!-- Nút đọc thêm-->
-                            <button class="btn">READ MORE</button>
+                            <a href="UBlog/Index">
+                                <button class="btn">READ MORE</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -493,7 +503,9 @@
                             <!-- Nội dung blog-->
                             <div class="content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt perspiciatis delectus quos tempore aspernatur alias repudiandae? Officia incidunt consequatur inventore fugit, at sit. Iusto maiores pariatur ea, ducimus neque aut!</div>
                             <!-- Nút đọc thêm-->
-                            <button class="btn">READ MORE</button>
+                            <a href="UBlog/Index">
+                                <button class="btn">READ MORE</button>
+                            </a>
                         </div>
                     </div>
                 </div>

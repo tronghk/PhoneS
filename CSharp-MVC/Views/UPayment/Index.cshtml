@@ -16,6 +16,8 @@
     {
         customer = JsonConvert.DeserializeObject<UserVm>(session);
     }
+    float price = ViewBag.price;
+    int voucherId = ViewBag.voucherId;
 }
 
 @model UPaymentVm;
@@ -34,7 +36,7 @@
 <link href="~/css/payment.css" rel="stylesheet" />
 <div class="page-wrapper container">
     <div class="payment-wrapper container row gx-2 justify-content-between d-md-flex">
-        <div class="first-content col-md-12 col-lg-6 pt-3">
+        <div style="margin-top:192px" class="first-content col-md-12 col-lg-6 pt-3">
             <!--Payment Infomation Wrapper-->
             <div class="payment-info">
                 <!-- Contact Infomation -->
@@ -45,8 +47,8 @@
                     <div class="contact-mail container">
                         <div class="email row gx-4">
                             <p id="full-name-display" class="full-name col-lg-9">
-                                Phan Thái Hòa
-                                <a id="email-display" class="email">(thaihoaphan123@gmail.com)</a>
+                                Trọng Nguyễn
+                                <a id="email-display" class="email">(trongnguyen.02.stu@gmail.com)</a>
                             </p>
                         </div>
                         <div class="log-out">
@@ -57,7 +59,7 @@
                 <!-- Shipping Infomation -->
                 <div class="shipping-info container row g-3 pt-4">
                     <div class="shipping-title">
-                        <h3>Shipping Address</h3>
+                        <h3>Địa chỉ giao hàng</h3>
                     </div>
                     <!-- Shipping Infomations Wrapper-->
                     <div class="shipping-holder">
@@ -80,29 +82,6 @@
                                     </li>
                                     <li>
                                         <a id="address1" class="dropdown-item" href="#">Address 3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Country Shipping Infomation-->
-                        <div class="shipping-country pt-2">
-                            <div class="dropdown">
-                                <button id="saved-countries"
-                                        class="btn btn-outline-secondary dropdown-toggle w-100"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                    Country/Region
-                                </button>
-                                <ul id="countries-list" class="dropdown-menu w-100">
-                                    <li>
-                                        <a id="country" class="dropdown-item" href="#">Viet Nam</a>
-                                    </li>
-                                    <li>
-                                        <a id="country" class="dropdown-item" href="#">United States</a>
-                                    </li>
-                                    <li>
-                                        <a id="country" class="dropdown-item" href="#">Japan</a>
                                     </li>
                                 </ul>
                             </div>
@@ -150,13 +129,6 @@
                                        id="city"
                                        placeholder="City" />
                             </div>
-                            <div class="ward pt-2">
-                                <!-- Input customer's ward -->
-                                <input type="text"
-                                       class="form-control"
-                                       id="ward"
-                                       placeholder="Ward" />
-                            </div>
                             <div class="district pt-2">
                                 <!-- Input customer's district -->
                                 <input type="text"
@@ -164,6 +136,14 @@
                                        id="district"
                                        placeholder="District" />
                             </div>
+                            <div class="ward pt-2">
+                                <!-- Input customer's ward -->
+                                <input type="text"
+                                       class="form-control"
+                                       id="ward"
+                                       placeholder="Ward" />
+                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -179,7 +159,7 @@
                                 <p>Standard</p>
                             </div>
                             <div class="option-price col-lg-6 p-2 d-flex justify-content-lg-end">
-                                <p>$5.00</p>
+                                <p>Free</p>
                             </div>
                         </div>
                     </div>
@@ -190,7 +170,7 @@
                         <div class="home-button d-flex align-content-center pt-3">
                             <box-icon name="chevron-left" class="pt-2"></box-icon>
                             <!-- Back to Home page -->
-                            <a href=""
+                            <a href="@Url.Action("Index","UCart")"
                                class="link-secondary link-offset-2 link-unde rline-opacity-25 link-underl ine-opacity-100-hover pt-2">Need more ? Return to store</a>
                         </div>
                         <div class="confirm-holder pb-3 col-md-6 d-flex justify-content-end col-sm-6">
@@ -208,15 +188,15 @@
                                     {
                                         if (c.ProductID == p.ProductID)
                                         {
-                                            float total = p.Price * c.Quantity;
-                                            subtotal += @total;
-                                            proids[count] = c.ProductID;
+                                            float abc = p.Price * c.Quantity;
+                                            subtotal += abc;
+                                           
                                             count += 1;
                                         }
                                     }
                                 }
                             }
-                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal, cusid = @cusid, userid = @customer.UserID, proid = @proids})">
+                            <a href="@Url.Action("CreateOrder", "UPayment", new { money = @subtotal,voucher = voucherId, cusid = @cusid})">
                                 <button class="confirm-btn btn btn-outline-danger p-lg-3 p-sm-2 w-sm-100">
                                     Create Order
                                 </button>
@@ -227,7 +207,7 @@
                 </div>
             </div>
         </div>
-        <div class="second-content col-md-12 col-lg-6 pt-3 ps-lg-5">
+        <div style="margin-top:192px" class="second-content col-md-12 col-lg-6 pt-3 ps-lg-5">
             <div class="product-payment pt-lg-5 pt-md-3">
                 <!-- Product's holder, this is where a product in cart will be rendered to-->
                 <div class="product-list pb-lg-4 pb-md-3">
@@ -262,9 +242,10 @@
                                         <!-- Product's price -->
                                         <div class="pr-totalprice">
                                             @{
-                                                float total = p.Price * c.Quantity;
+                                                float pro = p.Price * c.Quantity;
+                                                string fpro = (pro).ToString("N");
                                             }
-                                            <p>@total$</p>
+                                            <p>@fpro đ</p>
                                         </div>
                                     </div>
                                 }
@@ -277,10 +258,26 @@
                 <div class="product-summary">
                     <div class="sub-total d-flex justify-content-between pb-2 pt-3">
                         <div class="sub-text">
-                            <p>Sub Total</p>
+                            <p>Tổng tiền</p>
                         </div>
                         <div class="sub-money">
-                            <p>@subtotal$</p>
+                            <p>@{
+                                    string total = String.Format("{0:0.##}", subtotal);
+                                }@total đ
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="sub-total d-flex justify-content-between pb-2 pt-3">
+                        <div class="sub-text">
+                            <p>Giảm giá</p>
+                        </div>
+                        <div class="sub-money">
+                            <p>
+                                @{
+                                    string formatted = String.Format("{0:0.##}", price);
+                                }@formatted đ
+                            </p>
                         </div>
                     </div>
                     <div class="shipping d-flex justify-content-between pb-3">
@@ -288,7 +285,7 @@
                             <p>Shipping</p>
                         </div>
                         <div class="method-price">
-                            <p>5.00$</p>
+                            <p>Free</p>
                         </div>
                     </div>
                 </div>
@@ -303,9 +300,10 @@
                         <div class="total-price d-flex justify-content-between">
                             <div class="currency pe-3 d-flex"><p>NHD</p></div>
                             @{
-                                subtotal += 5.0f;
+                                float ab  = subtotal + 5.0f - price;
+                                string text = String.Format("{0:0.##}", ab);
                             }
-                            <div class="sum d-flex"><p>@subtotal$</p></div>
+                            <div class="sum d-flex"><p>@text đ</p></div>
                         </div>
                     </div>
                 </div>
@@ -314,3 +312,13 @@
     </div>
 </div>
 <script src="~/payment.js"></script>
+<script>
+    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+    const btn_login = document.querySelector(".block-userlink");
+
+    if (cu.Account != null) {
+        btn_login.style.visibility = "hidden";
+    } else {
+        btn_login.style.visibility = "visible";
+    }
+</script>

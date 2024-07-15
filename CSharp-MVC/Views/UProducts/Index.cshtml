@@ -87,7 +87,7 @@
         <div class="shop-area mb-20">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-3 col-lg-4">
+                    <div style="margin-top:192px" class="col-xl-3 col-lg-4">
                         <!--Category goes here-->
                         <div class="product-widget mb-30">
                             <h5 class="pt-title">Product categories</h5>
@@ -97,7 +97,10 @@
                                     {
                                         <div class="single-widget-category">
                                             @*<input type="checkbox" id="cat-item-@category.ProdCateID" name="cat-item" />*@
-                                            <label><a href="@Url.Action("Index", "UProducts", new { categoryId = category.ProdCateID })">@category.ProdCateName</a></label>
+                                            <a href="@Url.Action("Index", "UProducts", new { categoryId = category.ProdCateID })">
+                                                <label>@category.ProdCateName</label>
+                                            </a>
+                                            
                                         </div>
                                     }
                                 </form>
@@ -325,7 +328,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-9 col-lg-8">
+                    <div style="margin-top:192px" class="col-xl-9 col-lg-8">
                         <!--Shop banner, just put whatever, dont render this-->
                         <div class="shop-banner mb-30">
                             <div class="banner-image">
@@ -411,7 +414,7 @@
                                  id="FourCol"
                                  role="tabpanel"
                                  aria-labelledby="FourCol-tab">
-                                <div class="tp-wrapper">
+                                <div style="display:flex; flex-wrap: wrap; width:100%"class="tp-wrapper">
                                         <!--Product starts here-->
                                         @foreach (var products in Model.Products)
                                         {
@@ -585,6 +588,11 @@
                     console.error('AJAX Error:', textStatus, errorThrown);
                 }
             });
+        }
+        if (cu.Account != null) {
+            btn_login.style.visibility = "hidden";
+        } else {
+            btn_login.style.visibility = "visible";
         }
     </script>
 </body>

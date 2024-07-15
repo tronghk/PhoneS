@@ -232,13 +232,14 @@
           
             <div class="optionAdd">
                 <div class="d-block">
-                    <br><br>
-                    <div class="image-add" style="position: relative;">
-                        <img class="update-image" src="" alt="Image preview...">
-                        <input onchange="readUrl(this)" class="text-center" style="position: absolute; bottom: -30px; border: none;left:24%;width:95px" asp-for="linkImage" required="required" type="file">
+                    
+                    <div class="image-add" style="display: flex;position: relative;">
+                        <img style="width:100%" class="update-image" src="" alt="Image preview...">
+                        <input onchange="readUrl(this)" class="text-center" style="position: absolute; bottom: -47px; border: none;left:20%;width:95px" asp-for="linkImage" required="required" type="file">
                     </div>
                     <br />
-                    Lựa chọn: <br>
+                     <br>
+                    <p style="color:#000">Lựa chọn:</p>
 
                     
                     <button  asp-controller="AMProductCategory" asp-action="CreateCategory"  class="btn btn-primary btn-round ml-auto text-center " style="width: 90px; height: 40px; margin-top: 15px;">

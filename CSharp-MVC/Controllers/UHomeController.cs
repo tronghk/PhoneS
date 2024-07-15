@@ -102,15 +102,15 @@ namespace CSharp_MVC.Controllers
             return View(uHomeVm);
         }
 
-        public IActionResult Delete(int cartid)
+        public async Task<IActionResult> Delete(int cartid)
         {
-            _cartService.DeleteById(cartid);
+            await _cartService.DeleteById(cartid);
             return RedirectToAction("Index");
         }
 
-        public IActionResult AddtoCart(int usid, int proid)
+        public async Task<IActionResult> AddtoCart(int usid, int proid)
         {
-            _cartService.AddToCart(usid, proid);
+            await _cartService.AddToCart(usid, proid);
             return RedirectToAction("Index");
         }
 

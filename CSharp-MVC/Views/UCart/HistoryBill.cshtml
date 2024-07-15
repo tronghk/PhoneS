@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Cart Page";
+    var listProduct = ViewBag.listProduct;
+    var listCategory = ViewBag.listCategory;
+    Layout = "~/Views/Shared/UCartLayout.cshtml";
+    var session = HttpContextAccessor.HttpContext.Session.GetString("customer");
+    var customer = new UserVm();
+    if (session != null)
+    {
+        customer = JsonConvert.DeserializeObject<UserVm>(session);
+    }
+    float SumMoney = 0;
+    int endSum = -1;
+    var list = ViewBag.list as List<BillModel>;
+
+}
+
+
+<!-- cart-area-start -->
+<section class="cart-area pt-120 pb-120">
+    <div style="margin-top:100px" class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="#">
+                    <div class="table-content table-responsive">
+                        <h1>Lịch sử mua hàng</h1>
+                       
+                       
+                        
+                        <table class="table">
+                           
+                           
+                            @if(list != null)
+                            @foreach(var value in list)
+                            {
+                                    <tr>
+                                        <td colspan="5">Hóa đơn ngày @value.DateCreated</td>
+                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th class="product-thumbnail">Images</th>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="product-price">Unit Price</th>
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-subtotal">Total</th>
+
+                                        </tr>
+                                    </thead>
+                                        <tbody>
+                                       
+                                        @foreach (var item in value.Products)
+                                        {
+                                            <tr>
+                                                <!-- Hình Ảnh Sản phẩm -->
+                                                <td class="product-thumbnail">
+                                                    <a>
+                                                        <img src="~/StaticFile/Images/@item.Image" alt="">
+                                                    </a>
+                                                </td>
+                                                <!-- Tên Sản phẩm -->
+                                                <td class="product-name">
+                                                    <a>
+                                                        @item.ProductName
+                                                    </a>
+                                                </td>
+                                                <!-- Số lượng sản phẩm -->
+                                                <td class="product-price">
+                                                    @item.Price
+                                                </td>
+                                                <td class="product-price">
+                                                    @item.Quantity
+                                                </td>
+
+                                                <!-- Giá sản phẩm -->
+
+                                                <td class="product-subtotal"><span class="amount">@{
+
+                                                            var temp = (@item.Price * @item.Quantity).ToString("N");
+                                                        }
+                                                        @temp
+                                                </span></td>
+
+                                            </tr>
+                                           
+                                        }
+                                        <tr>
+                                            <td style="font-weight:bold" colspan="2">Giảm giá</td>
+                                            <td style="font-weight:bold" colspan="3"> @value.Voucher</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Tổng tiền</td>
+                                            <td colspan="3"> @value.MoneySum</td>
+
+                                        </tr>
+                                        </tbody>
+                                   
+                                   
+                                        
+                                }
+                                
+                        </table>
+                    </div>
+            
+                    <!-- Thanh toán -->
+            
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    var cu = @Html.Raw(JsonConvert.SerializeObject(@customer));
+    const btn_login = document.querySelector(".block-userlink");
+
+    if (cu.Account != null) {
+        btn_login.style.visibility = "hidden";
+    } else {
+        window.location.href = '/UHome/Index';
+        btn_login.style.visibility = "visible";
+    }
+
+
+
+
+
+
+</script>
+<!-- cart-area-end -->
