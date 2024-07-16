@@ -2,6 +2,8 @@
 -Clone project về máy
 - import file scritp sql vào ms sql
 - chạy chương trình:
+- vào file appsetting.json sửa ConnectionStrings phù hợp với máy đang chạy vd:
+- "Data Source=DESKTOP-KOGPVQA\\SQLEXPRESS;Initial Catalog=PhoneS;Integrated Security=True;MultipleActiveResultSets=True;"
 - quyền admin :
 - tk : admin
 - mk: 123123
